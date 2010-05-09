@@ -27,15 +27,15 @@
 %---------------------------------------------------------------------
 % SPECIAL CLASS FILE COMMANDS
 %---------------------------------------------------------------------
-\LoadClass[11pt,notitlepage,twoside]{scrartcl}
+\LoadClass[11pt,a4paper,notitlepage,twoside]{scrartcl}
 %---------------------------------------------------------------------
 % PACKAGE LOADING
 %---------------------------------------------------------------------
 \RequirePackage{graphicx}
 \RequirePackage{color}
 \RequirePackage{alltt}
-\RequirePackage{xifthen} % ifthen.sty with extensions
-\RequirePackage{geometry}
+\RequirePackage{ifthen}
+% \RequirePackage{geometry}
 \RequirePackage[%
     bookmarks=false,
     colorlinks=true,
@@ -57,21 +57,26 @@
 % DELCARE VARIOUS LENGTHS, COUNTERS
 %---------------------------------------------------------------------
 \setlength{\parskip}{1ex}
-\setcounter{secnumdepth}{2}
-\newlength{\jotpagewidth}\setlength{\jotpagewidth}{12cm}
+\setcounter{secnumdepth}{1}
+\newlength{\jotpagewidth}\setlength{\jotpagewidth}{15cm}
 %---------------------------------------------------------------------
 % PAGE SETTINGS
 %---------------------------------------------------------------------
-\geometry{
-    showframe,
-    a4paper,
-    % letterpaper,
-    asymmetric,
-    text={\jotpagewidth,24cm},
-    top=2cm, inner=3cm,
-    includemp, marginpar=42mm, marginparsep=6mm,
-    head=6mm, headsep=6mm, foot=12mm,
-}
+% \geometry{
+%     text={\jotpagewidth,24cm},
+%     nomarginpar,
+%     hcentering, top=3cm
+% }
+\RequirePackage[nochapters]{classicthesis}
+% % horizontal
+% \setlength{\hoffset}{0pt}
+% \setlength{\marginparwidth}{0pt}
+% \setlength{\evensidemargin}{6.3mm} 
+% \setlength{\oddsidemargin}{\evensidemargin}
+% \setlength{\textwidth}{\the\jotpagewidth}
+% % vertical
+% \addtolength{\topmargin}{-15mm}
+% \addtolength{\textheight}{20mm}
 %---------------------------------------------------------------------
 % DECLARE COLORS
 %---------------------------------------------------------------------
@@ -81,18 +86,18 @@
 %---------------------------------------------------------------------
 % DECLARE FONTS
 %---------------------------------------------------------------------
-\newcommand{\FontSection}{\large\sffamily}%\color{darkgreen}\uppercase}
-\newcommand{\FontSubsection}{\large\itshape\sffamily}%\color{darkblue}
-\newcommand{\FontSubsubsection}{\sffamily}
+\newcommand{\FontSection}{\color{darkgreen}\large\sf\uppercase}
+\newcommand{\FontSubsection}{\color{darkblue}\large\sf}
+\newcommand{\FontSubsubsection}{\color{black}\sf}
 \newcommand{\textssit}[1]{\textsf{\textit{#1}}}
 %---------------------------------------------------------------------
 % Source code font 
-\renewcommand{\verbatim@font}{\normalfont\ttfamily}%\color{lightblue}}
+\renewcommand{\verbatim@font}{\normalfont\ttfamily\color{lightblue}}
 %---------------------------------------------------------------------
 \renewcommand{\and}{ \\ }
 %---------------------------------------------------------------------
 % Draw a rule of width \jotpagewidth
-\newcommand{\pagewidthrule}{\rule{\the\jotpagewidth}{0pt}}
+\newcommand{\pagewidthrule}{\rule{\the\jotpagewidth}{0.5pt}}
 %---------------------------------------------------------------------
 
 
@@ -113,7 +118,7 @@
 %---------------------------------------------------------------------
 \newcommand{\firstpage}[1]{\renewcommand{\JOT@firstpage}{#1}}
 %---------------------------------------------------------------------
-% Last page number of the article/column
+% Lasts page number of the article/column
 %---------------------------------------------------------------------
 \newcommand{\lastpage}[1]{\renewcommand{\JOT@lastpage}{#1}}
 %---------------------------------------------------------------------
@@ -123,10 +128,10 @@
 \newcommand{\howtocite}[1]{\renewcommand{\JOT@howtocite}{#1}}
 %---------------------------------------------------------------------
 \renewcommand{\title}[2][xx]{%
-    \renewcommand{\JOT@pagetitle}{#2}
-    \ifthenelse{\equal{#1}{xx}}
-        {\renewcommand{\JOT@headtitle}{#2}} %then
-        {\renewcommand{\JOT@headtitle}{#1}} %else
+\renewcommand{\JOT@pagetitle}{#2}
+\ifthenelse{\equal{#1}{xx}}{
+\renewcommand{\JOT@headtitle}{#2}} %then
+{\renewcommand{\JOT@headtitle}{#1}} %else
 }
 %---------------------------------------------------------------------
 % Configuration is only possible before \begin{document}
@@ -142,9 +147,6 @@
 \@onlypreamble{\jotmonths}
 \@onlypreamble{\jotyear}
 \@onlypreamble{\authornames}
-
-\@onlypreamble{\title}
-\@onlypreamble{\author}
 %---------------------------------------------------------------------
 
 
@@ -155,25 +157,21 @@
 %---------------------------------------------------------------------
 % Produce a HTML-link
 %---------------------------------------------------------------------
-\newcommand{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
-% \newcommand{\htmllink}[1]{\href{#1}{#1}}
-\let\htmllink\url
-\let\maillink\email
+\newcommand{\htmllink}[1]{\href{#1}{#1}}
+\newcommand{\maillink}[1]{\href{mailto:#1}{#1}}
 %---------------------------------------------------------------------
 % Write source code
 %---------------------------------------------------------------------
-% \newcommand{\code}[1]{\texttt{\textcolor{lightblue}{#1}}}
-\let\code\texttt
-% \let\oldtt\tt
-% \renewcommand{\tt}{\color{lightblue}\oldtt}
+\newcommand{\code}[1]{\texttt{\textcolor{lightblue}{#1}}}
+\let\oldtt\tt
+\renewcommand{\tt}{\color{lightblue}\oldtt}
 %---------------------------------------------------------------------
-\newcommand{\abouttheauthor}[3][]{\ \\
-    \ifthenelse{\isempty{#1}}
-        {\textbf{#2} #3}
-        {\hbox{\includegraphics[width=26mm, height=26mm]{#1}%
-            \hspace{5mm}%
-            \parbox[b]{121.5mm}{\textbf{#2} #3}}}%
-}
+\newcommand{\abouttheauthor}[3][no]{\ \\
+\ifthenelse{\equal{#1}{no}}{\textbf{#2} #3}
+{\hbox{\includegraphics[width=26mm, height=26mm]{#1}%
+      \hspace{5mm}%
+      \parbox[b]{121.5mm}{\textbf{#2} #3}}
+}}
 %---------------------------------------------------------------------
 
 
@@ -185,13 +183,13 @@
 %---------------------------------------------------------------------
 \newcommand{\jottitle}{\textsf{\uppercase{Journal of Object Technology}}}
 \newcommand{\jotpage}{\textsf{\textbf{\thepage}}}
-\newcommand{\jotno}{\textsf{\uppercase{Vol.~\JOT@volume, no.~\JOT@number}}}
+\newcommand{\jotno}{\textsf{\uppercase{Vol \JOT@volume, no. \JOT@number}}}
 %---------------------------------------------------------------------
 \newcommand{\JOT@volume}{0}
 \newcommand{\JOT@number}{0}
 \newcommand{\JOT@month}{}
 \newcommand{\JOT@months}{}
-\newcommand{\JOT@year}{Y}
+\newcommand{\JOT@year}{Z}
 \newcommand{\JOT@filename}{}
 \newcommand{\JOT@headtitle}{}
 \newcommand{\JOT@pagetitle}{}
@@ -202,7 +200,7 @@
 %---------------------------------------------------------------------
 \renewcommand{\JOT@months}{%
 \ifthenelse{\JOT@number = 1}{January--February}{}%
-\ifthenelse{\JOT@number = 2}{March--April}{}%
+\ifthenelse{\JOT@number = 2}{March--Aprile}{}%
 \ifthenelse{\JOT@number = 3}{May--June}{}%
 \ifthenelse{\JOT@number = 4}{July--August}{}%
 \ifthenelse{\JOT@number = 5}{September--October}{}%
@@ -210,13 +208,11 @@
 \ifthenelse{\JOT@number < 1}{}{}%
 }
 %---------------------------------------------------------------------
-\newcommand{\JOT@howtocite}{\JOT@authornames: \textit{\JOT@headtitle},
-    in Journal of Object Technology, vol.~\JOT@volume, no.~\JOT@number, 
-    \JOT@months~\JOT@year, pages \JOT@firstpage--\JOT@lastpage.\par
-    \url{http://www.jot.fm/issues/issues_\JOT@year_\JOT@month/\JOT@filename}
-    % \href{http://www.jot.fm/issues/issues_\JOT@year_\JOT@month/\JOT@filename}%
-    %     {http://www.jot.fm/issues/issues\_\JOT@year\_\JOT@month/\JOT@filename}%
-}
+\newcommand{\JOT@howtocite}{\JOT@authornames: \textit{\JOT@headtitle}, 
+in Journal of Object Technology, vol. \JOT@volume, no. \JOT@number, 
+\JOT@months~\JOT@year, pages \JOT@firstpage--\JOT@lastpage, \par
+\href{http://www.jot.fm/issues/issues_\JOT@year_\JOT@month/\JOT@filename}%
+{http://www.jot.fm/issues/issues\_\JOT@year\_\JOT@month/\JOT@filename}}
 %---------------------------------------------------------------------
 
 
@@ -256,9 +252,15 @@
   \renewcommand{\@oddhead}{}
   \renewcommand{\@evenfoot}{}
   \renewcommand{\@oddfoot}{%
-    \begin{minipage}[t]{\jotpagewidth}\small\sffamily\raggedright
-	    Cite this \JOT@papertype~as follows:~\JOT@howtocite%
-	\end{minipage}}
+	\begin{sloppypar}
+	\hspace{-1mm}
+	\vbox{\vspace{8mm}\pagewidthrule\par
+	\vspace{-5mm}%
+	\begin{minipage}[t]{\the\jotpagewidth} \small\sf%
+	Cite this \JOT@papertype~as follows:~\JOT@howtocite%
+	\end{minipage}}%
+	\end{sloppypar}
+  }
 }
 
 %---------------------------------------------------------------------

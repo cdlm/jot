@@ -1,0 +1,1 @@
+$ENV{'TEXINPUTS'} = '../jotarticle:' . $ENV{'TEXINPUTS'};

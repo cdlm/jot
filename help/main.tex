@@ -9,6 +9,7 @@
 %---------------------------------------------------------------------
 
 \documentclass{jotarticle}
+\usepackage{lipsum} % only needed for this example file
 
 %---------------------------------------------------------------------
 % GENERAL INFORMATION
@@ -54,8 +55,10 @@
 %          Several authors can be separated by either \\ or \and
 %          Use bold font for the authors name as shown in the example.
 %---------------------------------------------------------------------
-\author{\textbf{Susanne Cech}, Departement Informatik, 
-        ETH Zurich, Switzerland}
+\author{%
+    \textbf{Susanne Cech}, Departement Informatik, ETH Zurich, Switzerland \and
+    \textbf{Damien Pollet}, Inria / Univ. Lille 1, France
+}
 %---------------------------------------------------------------------
 
 
@@ -83,8 +86,7 @@
 %       This is generated. In case it does not fit your expectations,
 %       you can enter it yourself.
 %---------------------------------------------------------------------
-\howtocite{\href{http://www.jot.fm/general/JOT_template_LaTeX.tgz}%
-{http://www.jot.fm/general/JOT\_template\_LaTeX.tgz}}
+\howtocite{\url{http://www.jot.fm/general/JOT_template_LaTeX.tgz}}
 %---------------------------------------------------------------------
 % [JOT] Set type of paper, i.e. column or article
 %       This is needed for the generation of \howtocite
@@ -94,7 +96,7 @@
 % [JOT] Set the filename. 
 %       This is needed for the generation of \howtocite
 %---------------------------------------------------------------------
-\filename{}
+\filename{JOT_template_LaTeX}
 %---------------------------------------------------------------------
 % [JOT] Enter the names of the authors as comma-separated list.
 %       This is needed for the generation of \howtocite.
@@ -136,19 +138,11 @@ of this document should also be read.
 %---------------------------------------------------------------------
 \section{Link commands}
 
-\subsection{HTML Links}
+To include links, you should use the \verb|\url{URL}| command from \verb|hyperref.sty|. For emails, a convenience command is available: \verb|\email{ADDRESS}|.
+The \verb|\htmllink| and \verb|\maillink| that were available in previous versions of this class still work, but are deprecated.
 
-To include HTML links, you should use this command: \verb|\htmllink{URL}|
+\paragraph{Example} \url{http://www.jot.fm}, \email{damien.pollet@inria.fr}
 
-\paragraph{Example} \htmllink{http://www.jot.fm}
-
-
-\subsection{E-Mail Addresses}
-
-To format e-mail addresses, use following command: 
-\verb|\maillink{emailaddress}|
-
-\paragraph{Example} \maillink{susanne.cech@inf.ethz.ch}
 
 
 %---------------------------------------------------------------------
@@ -184,6 +178,11 @@ two commands:
 
 \paragraph{Examples} \verb|x := x + 1| or \code{x := x + 1}
 
+
+%---------------------------------------------------------------------
+\section{Latin interlude with several text paragraphs}
+
+\lipsum
 
 
 %---------------------------------------------------------------------
