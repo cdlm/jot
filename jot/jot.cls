@@ -6,7 +6,7 @@
 
 \ProcessOptions\relax
 
-\LoadClass[11pt,twoside]{article}
+\LoadClass[10pt,twoside]{article}
 
 \RequirePackage{keyval} % for \jotdetails
 \RequirePackage{graphicx}
@@ -103,9 +103,9 @@
     a4paper,
     % letterpaper,
     % asymmetric,
-    text={13cm,24cm},
-    top=2cm, inner=2cm,
-    includemp, marginpar=4cm, marginparsep=1cm,
+    text={12cm,24cm},
+    top=2cm, inner=3cm,
+    includemp, marginpar=42mm, marginparsep=6mm,
     head=6mm, headsep=6mm, foot=12mm,
 }
 

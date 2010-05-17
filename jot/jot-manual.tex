@@ -1,6 +1,8 @@
 \documentclass{jot}
 
-\usepackage{lipsum}
+\usepackage{lipsum,ragged2e}
+\usepackage[latin]{babel}
+\usepackage{microtype}
 
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
@@ -22,8 +24,10 @@
 
 \section{Lorem Ipsum}
 
-\lipsum
+\lipsum[1-4]
 
+\marginpar{\RaggedRight\footnotesize\lipsum[1]}
+\lipsum[5-7]
 
 \section{Not Yet Implemented}
 
