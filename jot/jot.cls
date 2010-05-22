@@ -74,27 +74,44 @@
 \newcommand\jot@authors\@empty
 \newcounter{jot@numauthors}\setcounter{jot@numauthors}{0}
 \let\orig@author\author % original \author setter, for layout
-\renewcommand{\author}[2][\@empty]{% Optional nickname
+
+\renewcommand{\author}[3]{% \author{id}{name}{affiliations}
     \addtocounter{jot@numauthors}{1}
     \ifnum 1<\value{jot@numauthors} % not the 1st
         \g@addto@macro\jot@authors{\and}
         \g@addto@macro\jot@runningauthor{\and}
     \fi
-    \ifx#1\@empty
-      \g@addto@macro\jot@authors{#2}
-    \else
-      \g@addto@macro\jot@authors{\hyperlink{jot:authorinfo:#1}{#2}}
-    \fi
+    \g@addto@macro\jot@authors{\jot@format@author{#1}{#2}{#3}}
     \g@addto@macro\jot@runningauthor{#2}
 }
-% short way to typeset \and for headers & metadata
-\def\running@and{, }
+
+\newcommand\jot@authorbios\@empty
+\newcommand{\authorbio}[3]{% \authorbio{id}{photofile}{text}
+    \expandafter\newcommand\csname jot@authorphoto@#1\endcsname{#2}
+    \expandafter\newcommand\csname jot@authorbio@#1\endcsname{#3}
+    \g@addto@macro\jot@authorbios{\jot@format@authorbio{#1}}
+}
+
+\newcommand\jot@affiliations\@empty
+% \newcounter{jot@numaffiliations}\setcounter{jot@numaffiliations}{0}
+\newcommand{\affiliation}[2]{% \affiliation{id}{details}
+    % \addtocounter{jot@numaffiliations}{1}
+    \expandafter\newcommand\csname jot@affiliation@#1\endcsname{#2}
+    % \expandafter\newcommand\csname jot@affiliationnum@#1\endcsname{#2}
+    \g@addto@macro\jot@affiliations{\jot@format@affiliation{#1}}
+    \define@key{jot@affiliation@keys}{#1}[#1]{\jot@ref@affiliation{#1}}
+}
 
 % setting title
 \let\orig@title\title
-\renewcommand{\title}[1]{%
-    \renewcommand\jot@runningtitle{#1}%
-    \orig@title{#1}}
+\renewcommand{\title}[2][\@empty]{%
+    \ifx#1\@empty
+        \renewcommand\jot@runningtitle{#2}
+    \else
+        \renewcommand\jot@runningtitle{#1}
+    \fi
+    \orig@title{#2}
+}
 
 %%%% Layout & typography
 
@@ -103,9 +120,9 @@
     a4paper,
     % letterpaper,
     % asymmetric,
-    text={12cm,24cm},
-    top=2cm, inner=3cm,
-    includemp, marginpar=42mm, marginparsep=6mm,
+    body={14cm,24.25cm}, %body={12cm,24cm},
+    top=2cm, centering,%inner=3cm,
+    ignoreall, marginpar=25mm, marginparsep=5mm, %marginpar=42mm, marginparsep=6mm,
     head=6mm, headsep=6mm, foot=12mm,
 }
 
@@ -137,10 +154,24 @@
 \pagestyle{headings}
 \pagenumbering{arabic}
 
+% title page and typesetting author info
+
+% short way to typeset \and for headers & metadata
+\def\running@and{, }
+
+\newcommand\jot@format@author[3]{% id, name, affiliations
+    \expandafter\ifx\csname jot@authorbio@#1\endcsname\@empty
+        \hyperlink{jot:authorbio:#1}{#2}
+    \else #2\fi
+    % list of footnote-like links to affiliations
+    \ifx#3\@empty\else\setkeys{jot@affiliation@keys}{#3}\fi}
+
+\newcommand\jot@ref@affiliation[1]{\ref{jot:affiliation:#1}}
+\newcommand\jot@format@affiliation[1]{% id
+    \label{jot:affiliation:#1}\csname jot@affiliation@#1\endcsname\par}
+
+% document startup
 \AtBeginDocument{
-    \typeout{Number of authors: \arabic{jot@numauthors}}
-    \orig@author{\jot@authors}
-    \maketitle
     \hypersetup{% Embed PDF metadata after user has set it in preamble.
         pdfauthor=\jot@pdfauthor,
         pdftitle=\jot@pdftitle,
@@ -149,4 +180,8 @@
         % pdfcopyright={This document is licensed under a Creative Commons Attribution 3.0 license},
         % pdflicenseurl={\jot@cclicenseurl}
     }
+    \orig@author{\jot@authors}
+    \date{}% should customize \maketitle
+    \maketitle
+    \jot@affiliations
 }

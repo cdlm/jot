@@ -1,14 +1,18 @@
 \documentclass{jot}
 
-\usepackage{lipsum,ragged2e}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[latin]{babel}
 \usepackage{microtype}
+\usepackage{lipsum,ragged2e}
 
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
 
-\author{Damien Pollet}
-\author{Obi-wan Kenobi}
+\author{dp}{Damien Pollet}{inria}
+\author{owk}{Yoda}{jedi}
+\affiliation{inria}{Rmod, Inria Lille Nord Europe}
+\affiliation{jedi}{Jedi council, Coruscant}
 \jotdetails{
     volume=0,
     number=42,
@@ -21,13 +25,6 @@
     \lipsum[1-2]
 \end{abstract}
 
-
-\section{Lorem Ipsum}
-
-\lipsum[1-4]
-
-\marginpar{\RaggedRight\footnotesize\lipsum[1]}
-\lipsum[5-7]
 
 \section{Not Yet Implemented}
 
@@ -42,5 +39,16 @@
 	\item authors bios at end
 
 \end{itemize}
+
+
+\section{Lorem Ipsum}
+
+\lipsum[1-4]
+
+\marginpar{\footnotesize\Centering%\RaggedRight
+    Just in case… margin notes might as well be useable.
+    
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.}
+\lipsum[5-10]
 
 \end{document}
