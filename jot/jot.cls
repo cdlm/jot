@@ -71,11 +71,12 @@
 \newcommand{\pdfauthor}[1]{\renewcommand{\jot@pdfauthor}{#1}}
 
 % setting author info
-\newcommand\jot@authors\@empty
+\def\jot@authors{\@empty}
 \newcounter{jot@numauthors}\setcounter{jot@numauthors}{0}
 \let\orig@author\author % original \author setter, for layout
 
 \renewcommand{\author}[3]{% \author{id}{name}{affiliations}
+    \expandafter\def\csname jot@authorname@#1\endcsname{#2}
     \addtocounter{jot@numauthors}{1}
     \ifnum 1<\value{jot@numauthors} % not the 1st
         \g@addto@macro\jot@authors{\and}
@@ -85,19 +86,19 @@
     \g@addto@macro\jot@runningauthor{#2}
 }
 
-\newcommand\jot@authorbios\@empty
+\def\jot@authorbios{\@empty}
 \newcommand{\authorbio}[3]{% \authorbio{id}{photofile}{text}
-    \expandafter\newcommand\csname jot@authorphoto@#1\endcsname{#2}
-    \expandafter\newcommand\csname jot@authorbio@#1\endcsname{#3}
+    \expandafter\def\csname jot@authorphoto@#1\endcsname{#2}
+    \expandafter\def\csname jot@authorbio@#1\endcsname{#3}
     \g@addto@macro\jot@authorbios{\jot@format@authorbio{#1}}
 }
 
 \newcommand\jot@affiliations\@empty
-% \newcounter{jot@numaffiliations}\setcounter{jot@numaffiliations}{0}
+\newcounter{jot@numaffiliations}\setcounter{jot@numaffiliations}{0}
 \newcommand{\affiliation}[2]{% \affiliation{id}{details}
-    % \addtocounter{jot@numaffiliations}{1}
-    \expandafter\newcommand\csname jot@affiliation@#1\endcsname{#2}
-    % \expandafter\newcommand\csname jot@affiliationnum@#1\endcsname{#2}
+    \addtocounter{jot@numaffiliations}{1}
+    \expandafter\def\csname jot@affiliation@#1\endcsname{#2}
+    \expandafter\edef\csname jot@affiliationnum@#1\endcsname{\alph{jot@numaffiliations}}
     \g@addto@macro\jot@affiliations{\jot@format@affiliation{#1}}
     \define@key{jot@affiliation@keys}{#1}[#1]{\jot@ref@affiliation{#1}}
 }
@@ -131,7 +132,7 @@
 
 \hypersetup{
     breaklinks,
-    colorlinks,
+    % colorlinks,
     urlcolor=externallinkcolor,
     linkcolor=internallinkcolor,
     filecolor=externallinkcolor,
@@ -166,9 +167,42 @@
     % list of footnote-like links to affiliations
     \ifx#3\@empty\else\setkeys{jot@affiliation@keys}{#3}\fi}
 
-\newcommand\jot@ref@affiliation[1]{\ref{jot:affiliation:#1}}
+\newcommand\jot@ref@affiliation[1]{%
+    \hyperlink{jot:affiliation:#1}{\csname jot@affiliationnum@#1\endcsname}}
 \newcommand\jot@format@affiliation[1]{% id
-    \label{jot:affiliation:#1}\csname jot@affiliation@#1\endcsname\par}
+    \label{jot:affiliation:#1}%
+    \csname jot@affiliationnum@#1\endcsname
+    \csname jot@affiliation@#1\endcsname\par}
+
+\newlength{\jot@h}
+\newcommand\jot@format@authorbio[1]{%
+    \settoheight{\jot@h}{\strut}%
+    \edef\jot@photo{\csname jot@authorphoto@#1\endcsname}%
+    \noindent
+    \ifx\jot@photo\@empty
+        \ClassWarning{jot.cls}{No photo given for author "#1"}%
+        \hspace{2.5cm}%
+    \else
+        \raisebox{\jot@h}{%
+            \vtop{\null\hbox{\includegraphics[width=2.5cm]{\jot@photo}}}}%
+    \fi
+    \hspace{5mm}%
+    \parbox[t]{11cm}{%
+        \textbf{\csname jot@authorname@#1\endcsname}
+        \csname jot@authorbio@#1\endcsname
+    }\par
+    \null\medskip
+}
+
+\def\abouttheauthorsname{About the author\ifnum 1<\value{jot@numauthors}s\fi}
+\newcommand{\abouttheauthors}{%
+    \section*{\abouttheauthorsname}
+    \jot@authorbios}
+
+\newcommand\acknowledgmentsname{Acknowledgments}
+\newenvironment{acknowledgments}
+    {\paragraph*{\acknowledgmentsname}}
+    {}
 
 % document startup
 \AtBeginDocument{
@@ -183,5 +217,9 @@
     \orig@author{\jot@authors}
     \date{}% should customize \maketitle
     \maketitle
-    \jot@affiliations
-}
+    \begin{center}
+    	\jot@affiliations
+    \end{center}}
+
+% various convenience markup
+\newcommand{\email}[1]{\ttfamily\href{mailto:#1}{#1}}

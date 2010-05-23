@@ -2,7 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[latin]{babel}
+\usepackage[latin, english]{babel}
 \usepackage{microtype}
 \usepackage{lipsum,ragged2e}
 
@@ -10,9 +10,21 @@
 \runningtitle{Typesetting guidelines for JOT}
 
 \author{dp}{Damien Pollet}{inria}
-\author{owk}{Yoda}{jedi}
+\authorbio{dp}{damien.jpg}{
+    is an assistant professor at Université de Lille 1, France. His bio is artificially lengthened so that the quality of its formatting can be assessed and pondered.
+    
+    Right now he's wondering how {\TeX} boxes actually behave.
+    
+    \email{damien.pollet@inria.fr}
+}
+\author{y}{Yoda}{jedi}
+\authorbio{y}{}{Not very tall, but quite wise, he is.}
+\author{owk}{Obi-Wan Kenobi}{jedi}
+\authorbio{owk}{}{is looking for an explanation why he's coauthoring a {\LaTeX} manual.}
+
 \affiliation{inria}{Rmod, Inria Lille Nord Europe}
 \affiliation{jedi}{Jedi council, Coruscant}
+
 \jotdetails{
     volume=0,
     number=42,
@@ -22,7 +34,7 @@
 \begin{document}
 
 \begin{abstract}
-    \lipsum[1-2]
+    \foreignlanguage{latin}{\lipsum[1-2]}
 \end{abstract}
 
 
@@ -40,15 +52,32 @@
 
 \end{itemize}
 
-
+\begin{otherlanguage}{latin}
 \section{Lorem Ipsum}
 
-\lipsum[1-4]
+    \lipsum[1-4]
+
+\end{otherlanguage}
 
 \marginpar{\footnotesize\Centering%\RaggedRight
     Just in case… margin notes might as well be useable.
     
     Lorem ipsum dolor sit amet, consectetuer adipiscing elit.}
-\lipsum[5-10]
+
+\begin{otherlanguage}{latin}
+    \lipsum[5-10]
+\end{otherlanguage}
+
+% \backmatter
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{jot-manual}
+
+\abouttheauthors
+
+\begin{acknowledgments}
+    The authors wish to acknowledge the support of some long-winded list of people that more or less deserve to be long-windedly listed here…
+\end{acknowledgments}
 
 \end{document}
