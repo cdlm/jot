@@ -9,21 +9,27 @@
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
 
-\author{dp}{Damien Pollet}{inria}
-\authorbio{dp}{damien.jpg}{
-    is an assistant professor at Université de Lille 1, France. His bio is artificially lengthened so that the quality of its formatting can be assessed and pondered.
-    
-    Right now he's wondering how {\TeX} boxes actually behave.
-    
-    \email{damien.pollet@inria.fr}
-}
-\author{y}{Yoda}{jedi}
-\authorbio{y}{}{Not very tall, but quite wise, he is.}
-\author{owk}{Obi-Wan Kenobi}{jedi}
-\authorbio{owk}{}{is looking for an explanation why he's coauthoring a {\LaTeX} manual.}
+\author[affiliation=inria,photo=damien.jpg]
+    {Damien Pollet}{
+        is an assistant professor at Université de Lille 1, France.
+        His bio is artificially lengthened so that the quality of its formatting can be assessed and pondered.
+
+        Right now he's wondering why {\TeX} macros behave like they do, but at least it's possible to make several paragraphs in a long bio.
+
+        \email{damien.pollet@inria.fr}
+    }
+
+\author[affiliation=jedi]
+    {Yoda}
+    {Not very tall, but quite wise, he is.}
+\author[affiliation={ninja,fulcrum}]
+    {Ann O. Niemuß}{}
+    % {\nobio}
 
 \affiliation{inria}{Rmod, Inria Lille Nord Europe}
 \affiliation{jedi}{Jedi council, Coruscant}
+\affiliation{ninja}{This affiliation does not exist}
+\affiliation{fulcrum}{Neither does this one}
 
 \jotdetails{
     volume=0,
