@@ -14,6 +14,21 @@
 \RequirePackage{geometry}
 \RequirePackage{hyperref}
 
+
+%%%% user commands
+\@onlypreamble{\title}          % \title{...}
+\@onlypreamble{\author}         % \author[affiliation={a1,a2}, photo=file.jpg]{First Last}{bio & contact info}
+\@onlypreamble{\affiliation}    % \affiliation{a1}{description}
+
+\@onlypreamble{\jotdetails}     % \jotdetails{key=value}
+                                % possible keys:
+                                % year, volume, number, doi, url, dates received/published/revised...
+
+\@onlypreamble{\runningtitle}   % override title/author for headers
+\@onlypreamble{\runningauthor}
+\@onlypreamble{\pdftitle}       % override running title/author for PDF metadata
+\@onlypreamble{\pdfauthor}
+
 %%%% Publication information
 
 \newcommand\jot@doiderefaddress{http://dx.doi.org/}
@@ -53,6 +68,12 @@
 
 %%%% Article metadata
 
+% metadata setters, to override default values set by \author and \title
+\newcommand{\runningtitle}[1]{\renewcommand\jot@runningtitle{#1}}
+\newcommand{\runningauthor}[1]{\renewcommand\jot@runningauthor{#1}}
+\newcommand{\pdftitle}[1]{\renewcommand{\jot@pdftitle}{#1}}
+\newcommand{\pdfauthor}[1]{\renewcommand{\jot@pdfauthor}{#1}}
+
 \newcommand\jot@runningtitle{\@title}
 \newcommand\jot@runningauthor{}
 \newcommand\jot@firstpage{\getpagerefnumber{jot:firstpage}}
@@ -60,12 +81,6 @@
 \newcommand\jot@runningcitation{%
     \href{\jot@journaldoiaddress}{%
         \jot@journalname, vol.~\jot@volume, no.~\jot@number, \jot@year.}}
-
-% metadata setters, to override default values set by \author and \title
-\newcommand{\runningtitle}[1]{\renewcommand\jot@runningtitle{#1}}
-\newcommand{\runningauthor}[1]{\renewcommand\jot@runningauthor{#1}}
-\newcommand{\pdftitle}[1]{\renewcommand{\jot@pdftitle}{#1}}
-\newcommand{\pdfauthor}[1]{\renewcommand{\jot@pdfauthor}{#1}}
 
 % setting author info
 
@@ -133,6 +148,7 @@
     \fi
     \orig@title{#2}
 }
+
 
 %%%% Layout & typography
 
