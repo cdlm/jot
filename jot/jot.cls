@@ -14,6 +14,7 @@
 \RequirePackage{geometry}
 \RequirePackage{hyperref}
 \RequirePackage{eso-pic}
+% \RequirePackage[grid,texcoord]{eso-pic}
 \RequirePackage{soul}
 
 %%%% user commands
@@ -158,10 +159,10 @@
     a4paper,
     % letterpaper,
     % asymmetric,
-    body={14cm,24.25cm}, %body={12cm,24cm},
-    top=2cm, centering,%inner=3cm,
-    ignoreall, marginpar=25mm, marginparsep=5mm, %marginpar=42mm, marginparsep=6mm,
-    head=6mm, headsep=6mm, foot=12mm,
+    body={13cm,21cm}, %golden ratio    2x ratio: body={12cm,24cm},
+    top=3cm, centering,%inner=3cm,
+    ignoreall, marginpar=30mm, marginparsep=5mm, %marginpar=42mm, marginparsep=6mm,
+    head=10mm, headsep=10mm, foot=20mm,
 }
 
 \definecolor{internallinkcolor}{rgb}{0,0,0}
@@ -232,8 +233,17 @@
     \fi
 }
 
+\let\orig@bibliography\bibliography
+\renewcommand\bibliography[1]{
+    \phantomsection
+    \addcontentsline{toc}{section}{\bibname}
+    \orig@bibliography{#1}}
+\def\@openbib@code{\itemsep\z@\RaggedRight}
+
 \def\abouttheauthorsname{About the author\ifnum 1<\value{jot@numauthors}s\fi}
 \newcommand{\abouttheauthors}{%
+    \phantomsection
+    \addcontentsline{toc}{section}{\abouttheauthorsname}
     \section*{\abouttheauthorsname}
     \jot@authorbios}
 
@@ -253,8 +263,8 @@
     \AddToShipoutPicture*{%
         \setlength\unitlength{1mm}%
         \AtPageUpperLeft{%
-            \put(5,-2){\makebox(0,0)[lt]{\includegraphics[scale=.75]{jot}}}%
-            \put(105,-10){\makebox(0,0)[ct]{\parbox{\textwidth}{\centering
+            \put(8,-8){\makebox(0,0)[lt]{\includegraphics[scale=.75]{jot}}}%
+            \put(105,-20){\makebox(0,0)[cc]{\parbox{\textwidth}{\centering
                 {\LARGE\expandafter\caps\expandafter{\jot@journalname}}\\
                 \sffamily Online at \url{\jot@journaladdress}. Published by SCG?}}}}}%
     \thispagestyle{empty}
@@ -274,6 +284,10 @@
     \par
     \vskip 1.5em
 }
+
+\renewenvironment{abstract}
+    {\small\quotation}
+    {\endquotation}
 
 
 % document startup
