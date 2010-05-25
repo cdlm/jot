@@ -13,7 +13,8 @@
 \RequirePackage{color}
 \RequirePackage{geometry}
 \RequirePackage{hyperref}
-
+\RequirePackage{eso-pic}
+\RequirePackage{soul}
 
 %%%% user commands
 \@onlypreamble{\title}          % \title{...}
@@ -46,7 +47,7 @@
 \newcommand{\jot@received}{\@empty}
 \newcommand{\jot@published}{\@empty}
 \newcommand{\jot@revised}{\@empty}
-\newcommand{\jot@declaredfirstpage}{\@empty}
+\newcommand{\jot@declaredfirstpage}{1}
 \newcommand{\jot@doi}{\@empty}
 \newcommand{\jot@url}{\@empty}
 
@@ -240,6 +241,40 @@
 \newenvironment{acknowledgments}
     {\paragraph*{\acknowledgmentsname}}
     {}
+
+\renewcommand{\ps@plain}{%
+    \let\@evenhead\relax
+    \let\@oddhead\relax
+    \let\@evenfoot\relax
+    \let\@oddfoot\relax}
+
+\renewcommand{\@maketitle}{%
+    \setcounter{page}{\jot@declaredfirstpage}%
+    \AddToShipoutPicture*{%
+        \setlength\unitlength{1mm}%
+        \AtPageUpperLeft{%
+            \put(5,-2){\makebox(0,0)[lt]{\includegraphics[scale=.75]{jot}}}%
+            \put(105,-10){\makebox(0,0)[ct]{\parbox{\textwidth}{\centering
+                {\LARGE\expandafter\caps\expandafter{\jot@journalname}}\\
+                \sffamily Online at \url{\jot@journaladdress}. Published by SCG?}}}}}%
+    \thispagestyle{empty}
+    \null
+    \vskip 3em%
+    \begin{center}%
+        \let \footnote \thanks
+        {\Huge \@title \par}%
+        \vskip 1.5em%
+        {\large
+            \lineskip .5em%
+            \begin{tabular}[t]{c}%
+                \@author
+            \end{tabular}\par}%
+        \vskip 1em%
+    \end{center}%
+    \par
+    \vskip 1.5em
+}
+
 
 % document startup
 \AtBeginDocument{
