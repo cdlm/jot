@@ -39,6 +39,8 @@
 \newcommand\jot@journaladdress{http://www.jot.fm}
 \newcommand\jot@journaldoi{xxx}
 \newcommand{\jot@cclicenseurl}{http://creativecommons.org/licenses/by/3.0/}
+\newcommand{\jot@publisher}{ETH~Zurich, Chair of Software Engineering}
+\newcommand{\jot@copyright}{\copyright JOT 2010}
 \newcommand{\jot@licenseurl}{\jot@journaladdress/copyright.html}
 
 % Initialize properties to default values
@@ -263,10 +265,16 @@
     \AddToShipoutPicture*{%
         \setlength\unitlength{1mm}%
         \AtPageUpperLeft{%
-            \put(8,-8){\makebox(0,0)[lt]{\includegraphics[scale=.75]{jot}}}%
-            \put(105,-20){\makebox(0,0)[cc]{\parbox{\textwidth}{\centering
+            % \put(8,-8){\makebox(0,0)[lt]{\includegraphics[scale=.75]{jot-sig}}}%
+            % \put(175,-30){\makebox(0,0)[cc]{\includegraphics[width=3cm]{jot-uml}}}%
+            \put(105,-10){\makebox(0,0)[ct]{\parbox{\textwidth}{\centering
+                \includegraphics[width=3.5cm]{jot-uml}\\
+                \medskip
                 {\LARGE\expandafter\caps\expandafter{\jot@journalname}}\\
-                \sffamily Online at \url{\jot@journaladdress}. Published by SCG?}}}}}%
+                \smallskip
+                \small\sffamily Published by \jot@publisher, \href{\jot@licenseurl}{\jot@copyright}\\
+                Online at \url{\jot@journaladdress}.
+                }}}}}%
     \thispagestyle{empty}
     \null
     \vskip 3em%
