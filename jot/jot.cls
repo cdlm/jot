@@ -8,6 +8,7 @@
 
 \LoadClass[10pt,twoside]{article}
 
+\RequirePackage[utf8]{inputenc}
 \RequirePackage{keyval} % for \jotdetails
 \RequirePackage{graphicx}
 \RequirePackage{color}
@@ -40,7 +41,7 @@
 \newcommand\jot@journaldoi{xxx}
 \newcommand{\jot@cclicenseurl}{http://creativecommons.org/licenses/by/3.0/}
 \newcommand{\jot@publisher}{ETH~Zurich, Chair of Software Engineering}
-\newcommand{\jot@copyright}{\copyright JOT 2010}
+\newcommand{\jot@copyright}{\copyright\,JOT 2010}
 \newcommand{\jot@licenseurl}{\jot@journaladdress/copyright.html}
 
 % Initialize properties to default values
@@ -270,7 +271,7 @@
             \put(105,-10){\makebox(0,0)[ct]{\parbox{\textwidth}{\centering
                 \includegraphics[width=3.5cm]{jot-uml}\\
                 \medskip
-                {\LARGE\expandafter\caps\expandafter{\jot@journalname}}\\
+                {\Large\caps\jot@journalname}\\
                 \smallskip
                 \small\sffamily Published by \jot@publisher, \href{\jot@licenseurl}{\jot@copyright}\\
                 Online at \url{\jot@journaladdress}.
