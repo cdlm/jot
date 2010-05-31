@@ -8,15 +8,17 @@
 
 \LoadClass[10pt,twoside]{article}
 
-\RequirePackage[utf8]{inputenc}
 \RequirePackage{keyval} % for \jotdetails
-\RequirePackage{graphicx}
-\RequirePackage{color}
-\RequirePackage{geometry}
 \RequirePackage{hyperref}
+\RequirePackage{geometry}
+\RequirePackage{soul}
+\RequirePackage{ragged2e}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
 \RequirePackage{eso-pic}
 % \RequirePackage[grid,texcoord]{eso-pic}
-\RequirePackage{soul}
+\RequirePackage{placeins}
+\RequirePackage{wrapfig}
 
 %%%% user commands
 \@onlypreamble{\title}          % \title{...}
@@ -166,7 +168,10 @@
     top=3cm, centering,%inner=3cm,
     ignoreall, marginpar=30mm, marginparsep=5mm, %marginpar=42mm, marginparsep=6mm,
     head=10mm, headsep=10mm, foot=20mm,
+    columnsep=5mm
 }
+
+\setlength{\intextsep}{\z@}
 
 \definecolor{internallinkcolor}{rgb}{0,0,0}
 \definecolor{externallinkcolor}{rgb}{0,0,0}
@@ -222,16 +227,20 @@
     \ifx #4\relax % meh, {} is not \@empty ??
         \relax
     \else
-        \noindent
         \ifx #3\@empty
-            \hspace{2.5cm}%
+            % \hspace{2.5cm}%
+            % \hypertarget{jot:authorbio:#1}{\textbf{#2}} #4\par
         \else
-            % \raisebox{0ex}{%\jot@h}{%
-                \vtop{\null\hbox{\includegraphics[width=2.5cm]{#3}}}%
-            % }%
+            \begin{wrapfigure}{l}{2.5cm}%
+                \includegraphics[width=2.5cm]{#3}\vspace{1ex}%
+            \end{wrapfigure}%
+% 
+            % \vtop{\null\hbox{\includegraphics[width=2.5cm]{#3}}}%
+            % \hspace{5mm}%
+            % \parbox[t]{10cm}{\hypertarget{jot:authorbio:#1}{\textbf{#2}} #4}\par
         \fi
-        \hspace{5mm}%
-        \parbox[t]{11cm}{\hypertarget{jot:authorbio:#1}{\textbf{#2}} #4}\par
+        \noindent
+        \hypertarget{jot:authorbio:#1}{\textbf{#2}}\relax #4\par
         \null\medskip
     \fi
 }
@@ -298,6 +307,9 @@
     {\small\quotation}
     {\endquotation}
 
+\newcommand{\backmatter}{%
+     \FloatBarrier
+     \appendix}
 
 % document startup
 \AtBeginDocument{
@@ -317,4 +329,4 @@
     \end{center}}
 
 % various convenience markup
-\newcommand{\email}[1]{\ttfamily\href{mailto:#1}{#1}}
+\newcommand{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
