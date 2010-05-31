@@ -19,6 +19,7 @@
 % \RequirePackage[grid,texcoord]{eso-pic}
 \RequirePackage{placeins}
 \RequirePackage{wrapfig}
+\RequirePackage{calc}
 
 %%%% user commands
 \@onlypreamble{\title}          % \title{...}
@@ -245,6 +246,7 @@
     \fi
 }
 
+\providecommand{\bibname}{References} % it's a babel addition
 \let\orig@bibliography\bibliography
 \renewcommand\bibliography[1]{
     \phantomsection
@@ -277,10 +279,10 @@
         \AtPageUpperLeft{%
             % \put(8,-8){\makebox(0,0)[lt]{\includegraphics[scale=.75]{jot-sig}}}%
             % \put(175,-30){\makebox(0,0)[cc]{\includegraphics[width=3cm]{jot-uml}}}%
-            \put(105,-10){\makebox(0,0)[ct]{\parbox{\textwidth}{\centering
-                \includegraphics[width=3.5cm]{jot-uml}\\
-                \medskip
-                {\Large\caps\jot@journalname}\\
+            \put(105,-18){\makebox(0,0)[ct]{\parbox{\textwidth}{\centering
+                {\Large
+                    \raisebox{.8ex-.5\height}{\includegraphics[height=.8\baselineskip]{jot-umlsquare}}\quad
+                    \null\caps\jot@journalname}\\
                 \smallskip
                 \small\sffamily Published by \jot@publisher, \href{\jot@licenseurl}{\jot@copyright}\\
                 Online at \url{\jot@journaladdress}.
