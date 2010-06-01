@@ -20,6 +20,7 @@
 \RequirePackage{placeins}
 \RequirePackage{wrapfig}
 \RequirePackage{calc}
+% \RequirePackage{varioref}
 
 %%%% user commands
 \@onlypreamble{\title}          % \title{...}
@@ -173,7 +174,7 @@
     columnsep=5mm
 }
 
-\setlength{\intextsep}{\z@}
+\setlength{\intextsep}{.5ex} % for wrapfig
 
 \definecolor{internallinkcolor}{rgb}{0,0,0}
 \definecolor{externallinkcolor}{rgb}{0,0,0}
@@ -187,25 +188,80 @@
     citecolor=internallinkcolor,
 }
 
+%% varioref:
+% \labelformat{section}{\textsection\,#1}
+% \labelformat{subsection}{\textsection\,#1}
+% \labelformat{subsubsection}{\textsection\,#1}
+% \labelformat{figure}{figure\,#1}
+% \labelformat{table}{table\,#1}
+
+
+\let\titlefamily\sffamily
+
+
 % page headers & footers
-\newcommand\jot@headerlayout[1]{{\footnotesize#1}}
+\pagenumbering{arabic}
+
+\newcommand\jot@headerlayout[1]{{\let\thanks\@gobble\footnotesize#1}}
 \newcommand\jot@footerlayout[1]{{\footnotesize#1}}
 
 \renewcommand{\ps@headings}{%
-    \renewcommand{\@oddhead}{\sffamily
+    \renewcommand{\@oddhead}{\titlefamily
         \hfil\jot@headerlayout{\jot@runningtitle}\quad\textperiodcentered\quad\thepage}%
-    \renewcommand{\@evenhead}{\sffamily
+    \renewcommand{\@evenhead}{\titlefamily
         \thepage\quad\textperiodcentered\quad\jot@headerlayout{\jot@runningauthor}\hfil}%
-    \renewcommand{\@oddfoot}{\sffamily\hfil\jot@footerlayout{\jot@runningcitation}\hfil}%
-    \renewcommand{\@evenfoot}{\sffamily\hfil\jot@footerlayout{\jot@runningcitation}\hfil}%
+    \renewcommand{\@oddfoot}{\titlefamily\hfil\jot@footerlayout{\jot@runningcitation}\hfil}%
+    \renewcommand{\@evenfoot}{\titlefamily\hfil\jot@footerlayout{\jot@runningcitation}\hfil}%
+}
+
+\renewcommand{\ps@empty}{%
+    \renewcommand{\@evenhead}{}
+    \renewcommand{\@oddhead}{}
+    \renewcommand{\@evenfoot}{}
+    \renewcommand{\@oddfoot}{%
+        \begin{sloppypar}
+            \hspace{-1mm}
+            \vbox{\vspace{8mm}\pagewidthrule\par
+            \vspace{-5mm}%
+            \begin{minipage}[t]{\textwidth} \small\sf%
+            Cite this article~as follows:~\jot@runningcitation%
+            \end{minipage}}%
+        \end{sloppypar}
+    }
 }
 
 \pagestyle{headings}
-\pagenumbering{arabic}
 
-% title page and typesetting author info
+%% sectioning
 
-% short way to typeset \and for headers & metadata
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+        {-3.5ex \@plus -1ex \@minus -.2ex}%
+        {2.3ex \@plus.2ex}%
+        {\normalfont\Large\titlefamily}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+        {-3.25ex\@plus -1ex \@minus -.2ex}%
+        {1.5ex \@plus .2ex}%
+        {\normalfont\large\titlefamily}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+        {-2.5ex\@plus -1ex \@minus -.2ex}%
+        {1ex \@plus .2ex}%
+        {\normalfont\normalsize\titlefamily}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+        {2.5ex \@plus1ex \@minus.2ex}%
+        {-1em}%
+        {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
+        {3.25ex \@plus1ex \@minus .2ex}%
+        {-1em}%
+        {\normalfont\normalsize\bfseries}}
+
+%% captions
+\def\fnum@figure{{\titlefamily\figurename\nobreakspace\thefigure}}
+\def\fnum@table{{\titlefamily\tablename\nobreakspace\thetable}}
+
+%% title page and typesetting author info
+
+%% short way to typeset \and for headers & metadata
 \def\running@and{, }
 
 \newcommand\jot@format@author[4]{% id, name, affiliations, bio
@@ -227,15 +283,16 @@
     \ifx #4\relax % meh, {} is not \@empty ??
         \relax
     \else
-        \ifx #3\@empty
-            % \hspace{2.5cm}%
-        \else
+        % \par
+        \ifx #3\@empty\relax\else
+            {\ }% don't ask
             \begin{wrapfigure}{l}{2.5cm}%
-                \includegraphics[width=2.5cm]{#3}\vspace{1ex}%
+                \raisebox{\z@}[\height-\intextsep]{\includegraphics[width=2.5cm]{#3}}%
             \end{wrapfigure}%
         \fi
         \noindent
-        \hypertarget{jot:authorbio:#1}{\textbf{#2}\ \ignorespaces #4}\par
+        \hypertarget{jot:authorbio:#1}{\textbf{#2}}\ \ignorespaces
+        #4\par
         \null\medskip
     \fi
 }
@@ -267,6 +324,7 @@
     \let\@oddfoot\relax}
 
 \renewcommand{\@maketitle}{%
+    % \thispagestyle{plain}%
     \setcounter{page}{\jot@declaredfirstpage}%
     \AddToShipoutPicture*{%
         \setlength\unitlength{1mm}%
@@ -281,12 +339,11 @@
                 \small\sffamily Published by \jot@publisher, \href{\jot@licenseurl}{\jot@copyright}\\
                 Online at \url{\jot@journaladdress}.
                 }}}}}%
-    \thispagestyle{empty}
     \null
     \vskip 3em%
     \begin{center}%
         \let \footnote \thanks
-        {\Huge \@title \par}%
+        {\Huge\titlefamily \@title \par}%
         \vskip 1.5em%
         {\large
             \lineskip .5em%
