@@ -135,6 +135,7 @@
     \jot@addto@authorbios{{#3}}%
 }
 \long\def\author{\jot@needslong@author}
+\def\thanks{\ClassWarning{jot.cls}{Use the acknowledgments environment instead of \protect\thanks}\@gobble}
 
 % declare an affiliation: \affiliation{id}{details}
 \newcommand{\affiliation}[2]{%
@@ -219,29 +220,22 @@
 \newcommand\jot@ref@affiliation[1]{%
     \hyperlink{jot:affiliation:#1}{\,\textsuperscript{\csname jot@affiliationnum@#1\endcsname}}}
 \newcommand\jot@format@affiliation[1]{% id
-    \hypertarget{jot:affiliation:#1}{\textsuperscript{\csname jot@affiliationnum@#1\endcsname}\,}%
-    \csname jot@affiliation@#1\endcsname\par}
+    \item[\csname jot@affiliationnum@#1\endcsname.\,]%
+    \hypertarget{jot:affiliation:#1}{\csname jot@affiliation@#1\endcsname}}
 
-\newlength{\jot@h}
 \newcommand\jot@format@authorbio[4]{%
-    % \settoheight{\jot@h}{\strut}%
     \ifx #4\relax % meh, {} is not \@empty ??
         \relax
     \else
         \ifx #3\@empty
             % \hspace{2.5cm}%
-            % \hypertarget{jot:authorbio:#1}{\textbf{#2}} #4\par
         \else
             \begin{wrapfigure}{l}{2.5cm}%
                 \includegraphics[width=2.5cm]{#3}\vspace{1ex}%
             \end{wrapfigure}%
-% 
-            % \vtop{\null\hbox{\includegraphics[width=2.5cm]{#3}}}%
-            % \hspace{5mm}%
-            % \parbox[t]{10cm}{\hypertarget{jot:authorbio:#1}{\textbf{#2}} #4}\par
         \fi
         \noindent
-        \hypertarget{jot:authorbio:#1}{\textbf{#2}}\relax #4\par
+        \hypertarget{jot:authorbio:#1}{\textbf{#2}\ \ignorespaces #4}\par
         \null\medskip
     \fi
 }
@@ -301,12 +295,23 @@
             \end{tabular}\par}%
         \vskip 1em%
     \end{center}%
+    \list{}{%
+            \rightmargin    \leftmargin
+            \advance\leftmargin 1.5em
+            \listparindent  \z@
+            \itemindent     \listparindent
+            \labelwidth     1em%
+            \labelsep       .5em%
+            \parsep         \z@
+            \itemsep        1ex}%
+        \jot@affiliations
+    \endlist
     \par
     \vskip 1.5em
 }
 
 \renewenvironment{abstract}
-    {\small\quotation}
+    {\quotation\noindent\ignorespaces}
     {\endquotation}
 
 \newcommand{\backmatter}{%
@@ -326,9 +331,7 @@
     }
     \date{}% should customize \maketitle
     \maketitle
-    \begin{center}
-    	\jot@affiliations
-    \end{center}}
+}
 
 % various convenience markup
 \newcommand{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
