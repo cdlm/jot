@@ -8,7 +8,8 @@
 
 \LoadClass[10pt,twoside]{article}
 
-\RequirePackage{keyval} % for \jotdetails
+\RequirePackage{keyval}
+\RequirePackage{ifthen}
 \RequirePackage{hyperref}
 \RequirePackage{geometry}
 \RequirePackage{soul}
@@ -107,8 +108,10 @@
 \newtoks\jot@tmp@pic
 
 % parsing the key/val argument of \author
+\newif\ifjot@authorbio@nowrap
 \define@key{jot@author@keys}{affiliation}[\@empty]{\jot@tmp@aff\expandafter{#1}}
 \define@key{jot@author@keys}{photo}[\@empty]{\jot@tmp@pic\expandafter{#1}}
+\define@key{jot@author@keys}{nowrap}[true]{\csname jot@authorbio@nowrap#1\endcsname}
 
 % declare an author: \author[photo=...,affiliation=...]{name}{bio}
 \let\orig@author\author % original \author setter, for layout
@@ -120,7 +123,9 @@
         \g@addto@macro\jot@runningauthor{\running@and}%
     \fi
     \g@addto@macro\jot@runningauthor{#2}%
-    \jot@tmp@aff{\@empty}\jot@tmp@pic{\@empty}\setkeys{jot@author@keys}{#1}%
+    \jot@tmp@aff{\@empty}\jot@tmp@pic{\@empty}%
+    \jot@authorbio@nowrapfalse
+    \setkeys{jot@author@keys}{#1}%
     \ifx\the\jot@tmp@aff\@empty \ClassWarning{jot.cls}{No affiliation given for #2}\fi
     \ifx\the\jot@tmp@pic\@empty \ClassWarning{jot.cls}{No photo given for #2}\fi
     % meh, I want proper quasi-quoting...
@@ -129,7 +134,11 @@
     \jot@addto@authors{{#2}}%
     \expandafter\jot@addto@authors\expandafter{\expandafter{\the\jot@tmp@aff}}%
     \jot@addto@authors{{#3}}
-    \jot@addto@authorbios{\jot@format@authorbio}%
+    \ifjot@authorbio@nowrap
+        \jot@addto@authorbios{\jot@format@shortauthorbio}%
+    \else
+        \jot@addto@authorbios{\jot@format@authorbio}%
+    \fi
     \expandafter\jot@addto@authorbios\expandafter{\expandafter{\jot@tmp@id}}%
     \jot@addto@authorbios{{#2}}%
     \expandafter\jot@addto@authorbios\expandafter{\expandafter{\the\jot@tmp@pic}}%
@@ -279,20 +288,45 @@
     \item[\csname jot@affiliationnum@#1\endcsname.\,]%
     \hypertarget{jot:affiliation:#1}{\csname jot@affiliation@#1\endcsname}}
 
+\newlength{\strutheight}
 \newcommand\jot@format@authorbio[4]{%
     \ifx #4\relax % meh, {} is not \@empty ??
         \relax
     \else
+        \settoheight{\strutheight}{\strut}%
+        \noindent
         \ifx #3\@empty\relax\else
-            {\ }% don't ask
             \begin{wrapfigure}{l}{2.5cm}%
-                \raisebox{\z@}[\height-\intextsep]{\includegraphics[width=2.5cm]{#3}}%
+                \raisebox{\intextsep+\strutheight-\height}
+                         [\strutheight]
+                         [\height-\strutheight-\intextsep]
+                         {\includegraphics[width=2.5cm]{#3}}%
             \end{wrapfigure}%
         \fi
-        \noindent
-        \hypertarget{jot:authorbio:#1}{\let\thanks\@gobble\textbf{#2}}\ \ignorespaces
+        \strut\hypertarget{jot:authorbio:#1}{\let\thanks\@gobble\textbf{#2}}\ \ignorespaces
         #4\par
-        \null\medskip
+        \bigskip
+    \fi
+}
+\newcommand\jot@format@shortauthorbio[4]{%
+    \ifx #4\relax % meh, {} is not \@empty ??
+        \relax
+    \else
+        \noindent
+        \ifx #3\@empty
+            \hypertarget{jot:authorbio:#1}{\let\thanks\@gobble\textbf{#2}}\ \ignorespaces
+            #4
+        \else
+            \raisebox{-\height}{\includegraphics[width=2.5cm]{#3}}%
+            \hspace{5mm}%
+            \raisebox{-\height}{\begin{minipage}[t]{\textwidth-3cm}
+                \noindent\strut
+                \hypertarget{jot:authorbio:#1}{\let\thanks\@gobble\textbf{#2}}\ \ignorespaces
+                #4
+            \end{minipage}}%
+        \fi
+        \par
+        \bigskip
     \fi
 }
 
@@ -323,7 +357,7 @@
     \let\@oddfoot\relax}
 
 \renewcommand{\@maketitle}{%
-    % \thispagestyle{plain}%
+    \thispagestyle{plain}%
     \setcounter{page}{\jot@declaredfirstpage}%
     \AddToShipoutPicture*{%
         \setlength\unitlength{1mm}%
@@ -333,7 +367,7 @@
             \put(105,-18){\makebox(0,0)[ct]{\parbox{\textwidth}{\centering
                 {\Large
                     \raisebox{.8ex-.5\height}{\includegraphics[height=.8\baselineskip]{jot-umlsquare}}\quad
-                    \null\caps\jot@journalname}\\
+                    \null\rmfamily\caps\jot@journalname}\\
                 \smallskip
                 \small\sffamily Published by \jot@publisher, \href{\jot@licenseurl}{\jot@copyright}\\
                 Online at \url{\jot@journaladdress}.
