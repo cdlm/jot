@@ -283,7 +283,6 @@
     \ifx #4\relax % meh, {} is not \@empty ??
         \relax
     \else
-        % \par
         \ifx #3\@empty\relax\else
             {\ }% don't ask
             \begin{wrapfigure}{l}{2.5cm}%
@@ -291,7 +290,7 @@
             \end{wrapfigure}%
         \fi
         \noindent
-        \hypertarget{jot:authorbio:#1}{\textbf{#2}}\ \ignorespaces
+        \hypertarget{jot:authorbio:#1}{\let\thanks\@gobble\textbf{#2}}\ \ignorespaces
         #4\par
         \null\medskip
     \fi
