@@ -2,33 +2,55 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[latin, english]{babel}
+\usepackage[english]{babel}
 \usepackage{microtype}
 \usepackage{lipsum,ragged2e}
+\usepackage{booktabs}
+\usepackage{xspace}
+\usepackage{textcomp}
+\usepackage{listings}
+\lstset{
+    language=[LaTeX]TeX,
+    basicstyle={\ttfamily},
+    columns=fullflexible,
+    escapeinside={_}{_},
+    escapebegin={\rmfamily\textlangle\itshape},
+    escapeend={\upshape\textrangle},
+    gobble=4, xleftmargin=1cm
+}
+
+\def\code#1{\texttt{#1}}
+\def\jotcls{\code{jot.cls}\xspace}
 
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
 
 \author[affiliation=inria, photo=damien]
-    {Damien Pollet}{
-        is an assistant professor at Université de Lille 1, France.
-        His bio is artificially lengthened so that the quality of its formatting can be assessed and pondered.
-        His bio is artificially lengthened so that the quality of its formatting can be assessed and pondered.
+    {Damien Pollet}
+    {   is an assistant professor at the Université de Lille~1, France.
+        
+        When he's not busy hacking the \LaTeX{} document class for JOT and maintaining various web servers, he teaches software engineering or does research in the RMoD group, on better constructs and tools for dynamic programming languages, as well as on program visualization and reengineering.
+        
+        Contact him at \email{damien.pollet@inria.fr}, or visit \url{http://people.untyped.org/damien.pollet}.}
 
-        Right now he's wondering why {\TeX} macros behave like they do, but at least it's possible to make several paragraphs in a long bio. Contact him at \email{damien.pollet@inria.fr}, or visit \url{http://people.untyped.org/damien.pollet}.
-    }
+\author[affiliation=scg, photo=oscar, nowrap]
+    {Oscar Nierstrasz}
+    {   is a professor of computer science at the Institute of Computer Science (IAM) of the University of Bern, where he founded the Software Composition Group in 1994. 
 
-\author[affiliation=jedi]
-    {Yoda}
-    {Not very tall, but quite wise, he is.}
-\author[affiliation={ninja,fulcrum}]
-    {Ann O. Niemuß}{}
-    % {\nobio}
+        \url{http://scg.unibe.ch/staff/oscar}.}
 
-\affiliation{inria}{Rmod, Inria Lille Nord Europe}
-\affiliation{jedi}{Jedi council, Coruscant}
-\affiliation{ninja}{This affiliation does not exist}
-\affiliation{fulcrum}{Neither does this one}
+\author[affiliation=inria, photo=stephane, nowrap]
+    {Stéphane Ducasse}
+    {   is a research director at Inria Lille, where he founded the RMoD group in 2007.
+
+        \url{http://stephane.ducasse.free.fr}.}
+
+\author[nowrap]
+    {Lynn V. Siebel}
+    {is a fictive author who kindly accepted to demonstrate how the \jotcls class handles authors with multiple affiliations, but whose smile shall remain unseen.}
+
+\affiliation{inria}{RMoD, Inria Lille Nord Europe, France\\ \url{http://rmod.lille.inria.fr}}
+\affiliation{scg}{Software Composition Group, University of Bern, Switzerland\\ \url{http://scg.unibe.ch}}
 
 \jotdetails{
     volume=0,
@@ -36,13 +58,117 @@
     year=2010
 }
 
-\pagestyle{plain}
-
 \begin{document}
 
 \begin{abstract}
-    \foreignlanguage{latin}{\lipsum[1-2]}
+    This short manual documents the \jotcls \LaTeX{} document class, and provides guidelines and advice on how to use it to prepare and typeset article manuscripts for submission to the Journal of Object Technology (JOT).
 \end{abstract}
+
+
+\section{Installation and compatibility}
+
+The \jotcls project is hosted online at \url{http://github.com/cdlm/jot/}. You can download stable versions from there, or directly clone the development sources from the version control repository.
+To install the package, simply copy the files somewhere \TeX{} can find them.
+
+The class is developed and tested using the pdf\LaTeX{} toolchain, which is readily available in any modern \TeX{} distribution; the author uses \href{http://www.tug.org/texlive/}{\TeX{live}} on a Mac.
+Besides pdf\TeX{}, other \TeX{} engines or backends like \code{dvips} or \code{dvipdfm} \emph{should} work but are not supported.\footnote{The code does nothing to break them, at least not intentionally, so authors are free to work; nevertheless, in case the journal editors have to recompile articles from the \LaTeX{} sources, it's best if all submissions are guaranteed to compile cleanly with a single engine.}
+The \jotcls class requires the following packages, which are all part of the standard \TeX{live} contents:
+
+{\centering
+    \begin{tabular}{l@{\qquad}l@{\qquad}l}
+        \code{keyval}   & \code{hyperref} & \code{graphicx} \\
+        \code{ifthen}   & \code{soul}     & \code{xcolor} \\
+        \code{calc}     & \code{ragged2e} & \code{eso-pic} \\
+        \code{geometry} & \code{wrapfig}  & \code{placeins}
+    \end{tabular}\par}
+
+
+\section{General document structure}
+
+The \jotcls class builds on the standard \code{article.cls} from \LaTeX, so the document structure is pretty standard. The main differences concern how to declare the title, authors, affiliations, and publication information, and the end of the document.
+
+\begin{lstlisting}
+    \documentclass{jot}
+    _packages and preamble declarations_
+    
+    \title{ _paper title_ }
+    \author[_info_]{_name_}{ _bio text_ }
+    _more authors\dots_
+    \affiliation{_identifier_}{ _description_ }
+    _more affiliations\dots_
+    \jotdetails{ _publication information_ }
+    
+    \begin{document}
+        \begin{abstract}
+            _$\cdots$_
+        \end{abstract}
+        
+        _manuscript content\dots_
+        
+        \backmatter
+        _appendices\dots_
+        \bibliographystyle{alpha}
+        \bibliography{_bib files_}
+
+        \abouttheauthors
+        \begin{acknowledgments}
+            _$\cdots$_
+        \end{acknowledgments}
+    \end{document}
+\end{lstlisting}
+
+We describe the syntax of the commands in details in the next section. For now, here is a summary of the differences:
+\begin{itemize}
+    \item title and author information is declared in the preamble and is automatically typeset; there is no need to call the \lstinline{\maketitle} macro at the beginning of the document;
+    \item authors are declared independently, using one \lstinline{\author} declaration each, and similarly for affiliations;
+    \item the \lstinline{\jotdetails} command specifies journal publication information such as year, volume, number…
+\end{itemize}
+
+The main body of the article is organized just like with the standard \code{article} class, until we get to \lstinline{\backmatter}.
+This declaration marks the end of the manuscript text and the beginning of reference material; floating figures or tables that were postponed from the article body will be typeset at that point.
+If you need appendices, they should go just after \lstinline{\backmatter}; the bibliographic references and the author biographies should always end the article.
+
+
+\section{Preamble, title, author, and publication data}
+
+\subsection{Title}
+title
+runningtitle
+pdftitle
+
+\subsection{Author information}
+
+\subsection{Publication information}
+
+\subsection{Appendices and bibliography}
+
+Any appendices follow the \lstinline{\backmatter} declaration, which takes care of calling \lstinline{\appendix}.
+
+The bibliographic references follow the appendices; you can either adopt the Bib\TeX{} way as shown here, or use the \code{thebibliography} environment directly, but in any case, you should respect the \code{alpha} style for reference keys.
+
+\subsection{Author biographies and acknowledgments}
+
+The \lstinline{\abouttheauthors} declaration will typeset the authors bibliographies from the data given in the preamble.
+For the camera ready version, think of adjusting the layout to the quantity of text for each author, by toggling the \code{nowrap} option in the \lstinline{\author} declarations.
+
+Following this, you can use the \code{acknowledgments} environment to mention collaborations, grants, etc.
+
+
+\section{Various recommendations, good practices}
+
+\subsection{Encodings and language}
+inputenc
+babel
+
+\subsection{Better typography}
+chicago
+minimalism
+tables
+microtype
+
+\subsection{Displaying code}
+alltt
+listings
 
 
 \section{Not Yet Implemented}
@@ -56,21 +182,6 @@
     % \item authors bios at end
 \end{itemize}
 
-\begin{otherlanguage}{latin}
-\section{Lorem Ipsum}
-
-    \lipsum[1-4]
-
-\end{otherlanguage}
-
-\marginpar{\footnotesize\Centering%\RaggedRight
-    Just in case… margin notes might as well be useable.
-    
-    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.}
-
-\begin{otherlanguage}{latin}
-    \lipsum[5-10]
-\end{otherlanguage}
 
 \backmatter
 
@@ -81,7 +192,7 @@
 \abouttheauthors
 
 \begin{acknowledgments}
-    The authors wish to acknowledge the support of some long-winded list of people that more or less deserve to be long-windedly listed here…
+    The style and code of \code{jot.cls} was partially inspired from the previous \code{jotarticle.cls} developed at ETH~Zurich by Susanne Cech, and from the class \code{toc.cls} for the \emph{Theory of Computing} journal.
 \end{acknowledgments}
 
 \end{document}
