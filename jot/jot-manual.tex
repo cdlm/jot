@@ -5,7 +5,7 @@
 \usepackage[english]{babel}
 \usepackage{microtype}
 \usepackage{lipsum,ragged2e}
-\usepackage{booktabs}
+\usepackage{tabularx,booktabs}
 \usepackage{xspace}
 \usepackage{textcomp}
 \usepackage{listings}
@@ -18,9 +18,18 @@
     escapeend={\upshape\textrangle},
     gobble=4, xleftmargin=1cm
 }
+\lstMakeShortInline[
+    escapeinside={_}{_},
+    escapebegin=\parambegin,
+    escapeend=\paramend
+]|
 
+\def\parambegin{\rmfamily\textlangle\itshape}
+\def\paramend{\upshape\textrangle}
+\def\parameter#1{{\parambegin#1\paramend}}
 \def\code#1{\texttt{#1}}
-\def\jotcls{\code{jot.cls}\xspace}
+\let\file\code
+\def\jotcls{\file{jot.cls}\xspace}
 
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
@@ -28,7 +37,7 @@
 \author[affiliation=inria, photo=damien]
     {Damien Pollet}
     {   is an assistant professor at the Université de Lille~1, France.
-        
+    
         When he's not busy hacking the \LaTeX{} document class for JOT and maintaining various web servers, he teaches software engineering or does research in the RMoD group, on better constructs and tools for dynamic programming languages, as well as on program visualization and reengineering.
         
         Contact him at \email{damien.pollet@inria.fr}, or visit \url{http://people.untyped.org/damien.pollet}.}
@@ -42,26 +51,28 @@
 \author[affiliation=inria, photo=stephane, nowrap]
     {Stéphane Ducasse}
     {   is a research director at Inria Lille, where he founded the RMoD group in 2007.
-
+    
         \url{http://stephane.ducasse.free.fr}.}
 
-\author[nowrap]
+\author[affiliation={inria,scg}, nowrap]
     {Lynn V. Siebel}
     {is a fictive author who kindly accepted to demonstrate how the \jotcls class handles authors with multiple affiliations, but whose smile shall remain unseen.}
 
 \affiliation{inria}{RMoD, Inria Lille Nord Europe, France\\ \url{http://rmod.lille.inria.fr}}
 \affiliation{scg}{Software Composition Group, University of Bern, Switzerland\\ \url{http://scg.unibe.ch}}
 
+\runningauthor{Damien Pollet et al.}
 \jotdetails{
     volume=0,
     number=42,
     year=2010
 }
 
+\raggedbottom
 \begin{document}
 
 \begin{abstract}
-    This short manual documents the \jotcls \LaTeX{} document class, and provides guidelines and advice on how to use it to prepare and typeset article manuscripts for submission to the Journal of Object Technology (JOT).
+    This short manual documents the \jotcls \LaTeX{} document class, and provides guidelines and advice on how to use it to prepare and typeset article manuscripts for submission to \caps{jot}, the Journal of Object Technology.
 \end{abstract}
 
 
@@ -85,7 +96,7 @@ The \jotcls class requires the following packages, which are all part of the sta
 
 \section{General document structure}
 
-The \jotcls class builds on the standard \code{article.cls} from \LaTeX, so the document structure is pretty standard. The main differences concern how to declare the title, authors, affiliations, and publication information, and the end of the document.
+The \jotcls class builds on the standard \file{article.cls} from \LaTeX, so the document structure is pretty standard. The main differences concern how to declare the title, authors, affiliations, and publication information, and the end of the document.
 
 \begin{lstlisting}
     \documentclass{jot}
@@ -119,39 +130,116 @@ The \jotcls class builds on the standard \code{article.cls} from \LaTeX, so the 
 
 We describe the syntax of the commands in details in the next section. For now, here is a summary of the differences:
 \begin{itemize}
-    \item title and author information is declared in the preamble and is automatically typeset; there is no need to call the \lstinline{\maketitle} macro at the beginning of the document;
-    \item authors are declared independently, using one \lstinline{\author} declaration each, and similarly for affiliations;
-    \item the \lstinline{\jotdetails} command specifies journal publication information such as year, volume, number…
+    \item title and author information is declared in the preamble and is automatically typeset; there is no need to call the |\maketitle| macro at the beginning of the document;
+    \item authors are declared independently, using one |\author| declaration each, and similarly for affiliations;
+    \item the |\jotdetails| command specifies journal publication information such as year, volume, number…
 \end{itemize}
 
-The main body of the article is organized just like with the standard \code{article} class, until we get to \lstinline{\backmatter}.
+The main body of the article is organized just like with the standard |article| class, until we get to |\backmatter|.
 This declaration marks the end of the manuscript text and the beginning of reference material; floating figures or tables that were postponed from the article body will be typeset at that point.
-If you need appendices, they should go just after \lstinline{\backmatter}; the bibliographic references and the author biographies should always end the article.
+If you need appendices, they should go just after |\backmatter|; the bibliographic references and the author biographies should always end the article.
 
 
 \section{Preamble, title, author, and publication data}
 
+
 \subsection{Title}
-title
-runningtitle
-pdftitle
+
+Define the title the usual way, using |\title|; if your title spans multiple lines, you can use |\\| to split it at better points.
+\begin{lstlisting}
+    \title{_text_}
+\end{lstlisting}
+The main title is automatically used in page headers and \caps{pdf} metadata, but you can override it using the optional declarations |\runningtitle| or |\pdftitle|. Usually only the |\runningtitle| override will be necessary because |\pdftitle| takes the same value by default.
+\begin{lstlisting}
+    \runningtitle{_text_}
+    \pdftitle{_text_}
+\end{lstlisting}
+
 
 \subsection{Author information}
 
+In contrast with the standard \LaTeX{} classes, authors are declared separately, using an |\author| declaration each. Authors will appear in the order they were declared.
+\begin{lstlisting}
+    \author[_options_]{_name_}{_bio text_}
+\end{lstlisting}
+The first mandatory argument \parameter{name} defines the author's name. Nothing else should go there, as this value is used in several points in the typesetting; in particular, the |\thanks| macro is inactive: use the affiliation, acknowledgments, or biography texts instead.
+
+The second mandatory parameter \parameter{bio text} defines the biography and contact paragraphs that appear at the end of the article, in the \emph{\abouttheauthorsname{}} section; leaving \parameter{bio text} completely empty will suppress this author's entry there.
+
+The optional parameter \parameter{options} is a list of comma-separated |key=value| definitions:
+
+\begin{itemize}
+    \item |affiliation=lab|, or |affiliation={lab1,lab2}|
+    
+        Attach affiliations with the given identifiers to the author.
+
+    \item |photo=filename|
+
+        Point to the image file with the author's portrait. No need to specify the file extension. The photo should be of proper definition and proportions, however; a square or a squarish vertical rectangle about 200--300 pixels wide is good.
+    
+    \item |nowrap|
+    
+        Specify this option to adjust the layout of the biography text, if it does not flow under the picture by at least one or a couple lines.
+\end{itemize}
+
+Finally, as with the title, you can override the authors list in the headings or \caps{pdf} metadata. Both can take either the final text or an |\and|-separated list of authors.
+\begin{lstlisting}
+    \runningauthor{_names_}
+    \pdfauthor{_names_}
+\end{lstlisting}
+
+
+\subsection{Affiliations}
+
+Affiliations are typeset in an list below the names of the authors; this allows for any ordering convention between authors and affiliations, and for authors that have multiple affiliations.
+The \parameter{identifier} makes the link between the |affiliation| value in the author declaration and the affiliation information.
+Keep the \parameter{description text} compact vertically, two or three lines at most.
+\begin{lstlisting}
+    \affiliation{_identifier_}{_description text_}    
+\end{lstlisting}
+
+
 \subsection{Publication information}
+
+The |\jotdetails| declaration defines publication and indexing information about the article, in |key=value| form.
+\begin{lstlisting}
+    \jotdetails{_key-value info_}
+\end{lstlisting}\ 
+
+{\centering
+    \begin{tabularx}{\linewidth-2cm}{llX}
+        \toprule{}
+        Key & Type & Value \\
+        \midrule{}
+        \code{year} & number & Publication year, \\
+        \code{volume} & number & …volume, \\
+        \code{number} & number & …number of the issue. \\
+        \\
+        % \midrule
+        \code{received} & date & Dates of initial submission, \\
+        \code{published} & date & …final publication, \\
+        \code{revised} & date & …and latest revision of the paper. \\
+        \\
+        % \midrule
+        \code{firstpage} & number & First page of this article, as placed in the full journal issue. \\
+        \code{doi} & string & \caps{doi} identifier for the paper, without the resolver prefix \caps{url}. \\
+        \code{url} & \caps{url} & Address of the paper in the \caps{jot} web site. \\
+        \bottomrule
+    \end{tabularx}\par}
+
 
 \subsection{Appendices and bibliography}
 
-Any appendices follow the \lstinline{\backmatter} declaration, which takes care of calling \lstinline{\appendix}.
+Any appendices follow the |\backmatter| declaration, which takes care of calling |\appendix|.
 
-The bibliographic references follow the appendices; you can either adopt the Bib\TeX{} way as shown here, or use the \code{thebibliography} environment directly, but in any case, you should respect the \code{alpha} style for reference keys.
+The bibliographic references follow the appendices; you can either adopt the Bib\TeX{} way as shown here, or use the |thebibliography| environment directly, but in any case, you should respect the |alpha| style for reference keys.
 
 \subsection{Author biographies and acknowledgments}
 
-The \lstinline{\abouttheauthors} declaration will typeset the authors bibliographies from the data given in the preamble.
-For the camera ready version, think of adjusting the layout to the quantity of text for each author, by toggling the \code{nowrap} option in the \lstinline{\author} declarations.
+The |\abouttheauthors| declaration will typeset the authors bibliographies from the data given in the preamble.
+For the camera ready version, think of adjusting the layout to the quantity of text for each author, by toggling the |nowrap| option in the |\author| declarations.
 
-Following this, you can use the \code{acknowledgments} environment to mention collaborations, grants, etc.
+Following this, you can use the |acknowledgments| environment to mention collaborations, grants, etc.
 
 
 \section{Various recommendations, good practices}
