@@ -275,15 +275,15 @@
 
 \newcommand\jot@format@author[4]{% id, name, affiliations, bio
     \ifx #4\relax % meh, {} is not \@empty ??
-        \relax #2
+        \relax #2%
     \else
-        \hyperlink{jot:authorbio:#1}{#2}
+        \hyperlink{jot:authorbio:#1}{#2}%
     \fi
     % list of footnote-like links to affiliations
-    \ifx#3\@empty\else\setkeys{jot@affiliation@keys}{#3}\fi}
+    \ifx#3\@empty\else\rlap{\setkeys{jot@affiliation@keys}{#3}}\fi}
 
 \newcommand\jot@ref@affiliation[1]{%
-    \hyperlink{jot:affiliation:#1}{\,\textsuperscript{\csname jot@affiliationnum@#1\endcsname}}}
+    \hyperlink{jot:affiliation:#1}{\strut\textsuperscript{\csname jot@affiliationnum@#1\endcsname}}}
 \newcommand\jot@format@affiliation[1]{% id
     \item[\csname jot@affiliationnum@#1\endcsname.\,]%
     \hypertarget{jot:affiliation:#1}{\csname jot@affiliation@#1\endcsname}}
@@ -379,7 +379,7 @@
         {\Huge\titlefamily \@title \par}%
         \vskip 1.5em%
         {\large
-            \lineskip .5em%
+            \lineskip .75em%
             \begin{tabular}[t]{c}%
                 \@author
             \end{tabular}\par}%
