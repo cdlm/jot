@@ -42,6 +42,7 @@
 \newcommand\jot@doiderefaddress{http://dx.doi.org/}
 \newcommand\jot@journalname{Journal of Object Technology}
 \newcommand\jot@journaldoiaddress{\jot@doiderefaddress\jot@journaldoi}
+\newcommand\jot@articledoiaddress{\jot@doiderefaddress\jot@doi}
 \newcommand\jot@journaladdress{http://www.jot.fm}
 \newcommand\jot@journaldoi{xxx}
 \newcommand{\jot@cclicenseurl}{http://creativecommons.org/licenses/by/3.0/}
@@ -57,8 +58,8 @@
 \newcommand{\jot@published}{\@empty}
 \newcommand{\jot@revised}{\@empty}
 \newcommand{\jot@declaredfirstpage}{1}
-\newcommand{\jot@doi}{\@empty}
-\newcommand{\jot@url}{\@empty}
+\newcommand{\jot@doi}{\jot@journaldoiaddress}
+\newcommand{\jot@url}{\jot@journaladdress}
 
 % Declare keys for \jotdetails
 \define@key{jot@details@keys}{year}{\renewcommand{\jot@year}{#1}}
@@ -84,13 +85,12 @@
 \newcommand{\pdftitle}[1]{\renewcommand{\jot@pdftitle}{#1}}
 \newcommand{\pdfauthor}[1]{\renewcommand{\jot@pdfauthor}{#1}}
 
-\newcommand\jot@runningtitle{\@title}
+\newcommand\jot@runningtitle{\jot@title}
 \newcommand\jot@runningauthor{}
 \newcommand\jot@firstpage{\getpagerefnumber{jot:firstpage}}
 \newcommand\jot@lastpage{\getpagerefnumber{jot:lastpage}}
 \newcommand\jot@runningcitation{%
-    \href{\jot@journaldoiaddress}{%
-        \jot@journalname, vol.~\jot@volume, no.~\jot@number, \jot@year.}}
+    \href{\jot@url}{\jot@journalname, vol.~\jot@volume, no.~\jot@number, \jot@year}.}
 
 % setting author info
 
@@ -211,32 +211,35 @@
 % page headers & footers
 \pagenumbering{arabic}
 
-\newcommand\jot@headerlayout[1]{{\let\thanks\@gobble\footnotesize#1}}
-\newcommand\jot@footerlayout[1]{{\footnotesize#1}}
+\newcommand\jot@headfootsetup{\let\thanks\@gobble\footnotesize}
 
 \renewcommand{\ps@headings}{%
     \renewcommand{\@oddhead}{\titlefamily
-        \hfil\jot@headerlayout{\jot@runningtitle}\quad\textperiodcentered\quad\thepage}%
+        \hfil{\jot@headfootsetup\jot@runningtitle\quad\textperiodcentered\quad}\thepage}%
     \renewcommand{\@evenhead}{\titlefamily
-        \thepage\quad\textperiodcentered\quad\jot@headerlayout{\jot@runningauthor}\hfil}%
-    \renewcommand{\@oddfoot}{\titlefamily\hfil\jot@footerlayout{\jot@runningcitation}\hfil}%
-    \renewcommand{\@evenfoot}{\titlefamily\hfil\jot@footerlayout{\jot@runningcitation}\hfil}%
+        \thepage{\jot@headfootsetup\quad\textperiodcentered\quad\jot@runningauthor}\hfil}%
+    \renewcommand{\@oddfoot}{\titlefamily\hfil{\jot@headfootsetup\jot@runningcitation}\hfil}%
+    \renewcommand{\@evenfoot}{\titlefamily\hfil{\jot@headfootsetup\jot@runningcitation}\hfil}%
 }
 
-\renewcommand{\ps@empty}{%
+\renewcommand{\ps@plain}{%
     \renewcommand{\@evenhead}{}
     \renewcommand{\@oddhead}{}
     \renewcommand{\@evenfoot}{}
     \renewcommand{\@oddfoot}{%
-        \begin{sloppypar}
-            \hspace{-1mm}
-            \vbox{\vspace{8mm}\pagewidthrule\par
-            \vspace{-5mm}%
-            \begin{minipage}[t]{\textwidth} \small\sf%
-            Cite this article~as follows:~\jot@runningcitation%
-            \end{minipage}}%
-        \end{sloppypar}
-    }
+        \titlefamily
+        \hfil
+        \begin{minipage}[t]{\textwidth}\jot@headfootsetup\raggedright
+            \let\jot@format@author\jot@name@author
+            \let\and\running@and
+            \let\\\relax
+            \jot@authors.\quad
+            \emph{\jot@title}.\quad
+            In \jot@runningcitation, page~\jot@firstpage.\quad
+            Available at \url{\jot@url}
+        \end{minipage}%
+        \hfil
+    }%
 }
 
 \pagestyle{headings}
@@ -273,6 +276,7 @@
 %% short way to typeset \and for headers & metadata
 \def\running@and{, }
 
+\newcommand\jot@name@author[4]{#2}
 \newcommand\jot@format@author[4]{% id, name, affiliations, bio
     \ifx #4\relax % meh, {} is not \@empty ??
         \relax #2%
@@ -350,12 +354,6 @@
     {\paragraph*{\acknowledgmentsname}}
     {}
 
-\renewcommand{\ps@plain}{%
-    \let\@evenhead\relax
-    \let\@oddhead\relax
-    \let\@evenfoot\relax
-    \let\@oddfoot\relax}
-
 \renewcommand{\@maketitle}{%
     \thispagestyle{plain}%
     \setcounter{page}{\jot@declaredfirstpage}%
@@ -366,7 +364,7 @@
             % \put(175,-30){\makebox(0,0)[cc]{\includegraphics[width=3cm]{jot-uml}}}%
             \put(105,-18){\makebox(0,0)[ct]{\parbox{\textwidth}{\centering
                 {\Large
-                    \raisebox{.8ex-.5\height}{\includegraphics[height=.8\baselineskip]{jot-umlsquare}}\quad
+                    % \raisebox{.8ex-.5\height}{\includegraphics[height=.8\baselineskip]{jot-umlsquare}}\quad
                     \null\rmfamily\caps\jot@journalname}\\
                 \smallskip
                 \small\sffamily Published by \jot@publisher, \href{\jot@licenseurl}{\jot@copyright}\\
@@ -408,9 +406,10 @@
      \FloatBarrier
      \appendix}
 
-% document startup
-\AtBeginDocument{
-    \orig@author{\jot@authors}
+% document hooks
+\AtBeginDocument{%
+    \let\jot@title\@title
+    \orig@author{\jot@authors}%
     \hypersetup{% Embed PDF metadata after user has set it in preamble.
         pdfauthor=\jot@runningauthor,
         pdftitle=\jot@runningtitle,
@@ -418,9 +417,14 @@
         % pdfkeywords=xxx,
         % pdfcopyright={This document is licensed under a Creative Commons Attribution 3.0 license},
         % pdflicenseurl={\jot@cclicenseurl}
-    }
+    }%
     \date{}% should customize \maketitle
     \maketitle
+}
+\AtEndDocument{%
+    \vfill
+    \centering
+    \includegraphics[height=\baselineskip]{jot-umlsquare}%
 }
 
 % various convenience markup
