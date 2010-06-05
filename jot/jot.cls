@@ -11,6 +11,7 @@
 \RequirePackage{keyval}
 \RequirePackage{ifthen}
 \RequirePackage{hyperref}
+\RequirePackage{refcount}
 \RequirePackage{geometry}
 \RequirePackage{soul}
 \RequirePackage{ragged2e}
@@ -235,7 +236,7 @@
             \let\\\relax
             \jot@authors.\quad
             \emph{\jot@title}.\quad
-            In \jot@runningcitation, page~\jot@firstpage.\quad
+            In \jot@runningcitation, pages~\jot@firstpage--\jot@lastpage.\quad
             Available at \url{\jot@url}
         \end{minipage}%
         \hfil
@@ -355,8 +356,8 @@
     {}
 
 \renewcommand{\@maketitle}{%
-    \thispagestyle{plain}%
     \setcounter{page}{\jot@declaredfirstpage}%
+    \label{jot:firstpage}%
     \AddToShipoutPicture*{%
         \setlength\unitlength{1mm}%
         \AtPageUpperLeft{%
@@ -422,6 +423,7 @@
     \maketitle
 }
 \AtEndDocument{%
+    \label{jot:lastpage}%
     \vfill
     \centering
     \includegraphics[height=\baselineskip]{jot-umlsquare}%
