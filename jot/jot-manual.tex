@@ -11,12 +11,10 @@
 \usepackage{listings}
 \lstset{
     language=[LaTeX]TeX,
-    basicstyle={\ttfamily},
-    columns=fullflexible,
     escapeinside={_}{_},
     escapebegin={\rmfamily\textlangle\itshape},
     escapeend={\upshape\textrangle},
-    gobble=4, xleftmargin=1cm
+    gobble=4
 }
 \lstMakeShortInline[
     escapeinside={_}{_},
@@ -24,12 +22,13 @@
     escapeend=\paramend
 ]|
 
-\def\parambegin{\rmfamily\textlangle\itshape}
-\def\paramend{\upshape\textrangle}
-\def\parameter#1{{\parambegin#1\paramend}}
-\def\code#1{\texttt{#1}}
+\newcommand\parambegin{\rmfamily\textlangle\itshape}
+\newcommand\paramend{\upshape\textrangle}
+\newcommand\parameter[1]{{\parambegin#1\paramend}}
+\newcommand\code[1]{\texttt{#1}}
 \let\file\code
-\def\jotcls{\file{jot.cls}\xspace}
+\newcommand\jotcls{\file{jot.cls}\xspace}
+\newcommand\JOT{\caps{jot}\xspace}
 
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
@@ -38,7 +37,7 @@
     {Damien Pollet}
     {   is an assistant professor at the Université de Lille~1, France.
     
-        When he's not busy hacking the \LaTeX{} document class for JOT and maintaining various web servers, he teaches software engineering or does research in the RMoD group, on better constructs and tools for dynamic programming languages, as well as on program visualization and reengineering.
+        When he's not busy hacking the \LaTeX{} document class for \JOT and maintaining various web servers, he teaches software engineering or does research in the RMoD group, on better constructs and tools for dynamic programming languages, as well as on program visualization and reengineering.
         
         Contact him at \email{damien.pollet@inria.fr}, or visit \url{http://people.untyped.org/damien.pollet}.}
 
@@ -70,12 +69,13 @@
     url={http://github.com/cdlm/jot}
 }
 
-\raggedbottom
 \begin{document}
 
 \begin{abstract}
-    This short manual documents the \jotcls \LaTeX{} document class, and provides guidelines and advice on how to use it to prepare and typeset article manuscripts for submission to \caps{jot}, the Journal of Object Technology.
+    This short manual documents the \jotcls \LaTeX{} document class, and provides guidelines and advice on how to use it to prepare and typeset article manuscripts for submission to \JOT, the Journal of Object Technology.
 \end{abstract}
+
+
 
 
 \section{Installation and compatibility}
@@ -89,17 +89,29 @@ The \jotcls class requires the following packages, which are all part of the sta
 
 {\centering
     \begin{tabular}{l@{\qquad}l@{\qquad}l}
-        \code{keyval}   & \code{hyperref} & \code{graphicx} \\
-        \code{ifthen}   & \code{refcount} & \code{xcolor} \\
-        \code{calc}     & \code{soul}     & \code{eso-pic} \\
-        \code{geometry} & \code{ragged2e} & \code{placeins} \\
-                        & \code{wrapfig}
+        \code{calc}
+        & \code{caption}
+        & \code{eso-pic} \\
+        \code{geometry}
+        & \code{graphicx}
+        & \code{hyperref} \\
+        \code{ifthen}
+        & \code{keyval}
+        & \code{listings} \\
+        \code{placeins}
+        & \code{ragged2e}
+        & \code{refcount} \\
+        \code{soul}
+        & \code{wrapfig}
+        & \code{xcolor}
     \end{tabular}\par}
+
+
 
 
 \section{General document structure}
 
-The \jotcls class builds on the standard \file{article.cls} from \LaTeX, so the document structure is pretty standard. The main differences concern how to declare the title, authors, affiliations, and publication information, and the end of the document.
+The \jotcls class builds on the standard \file{article.cls} from \LaTeX, so the document structure is pretty standard. The main differences concern how to declare the title, authors, affiliations, and publication information, and the end of the document. See the |template.tex| file in the \jotcls distribution for a more complete, reusable starting point.
 
 \begin{lstlisting}
     \documentclass{jot}
@@ -141,6 +153,8 @@ We describe the syntax of the commands in details in the next section. For now, 
 The main body of the article is organized just like with the standard |article| class, until we get to |\backmatter|.
 This declaration marks the end of the manuscript text and the beginning of reference material; floating figures or tables that were postponed from the article body will be typeset at that point.
 If you need appendices, they should go just after |\backmatter|; the bibliographic references and the author biographies should always end the article.
+
+
 
 
 \section{Preamble, title, author, and publication data}
@@ -204,12 +218,12 @@ Keep the \parameter{description text} compact vertically, two or three lines at 
 
 \subsection{Publication information}
 
-The |\jotdetails| declaration defines publication and indexing information about the article, in |key=value| form.
+The |\jotdetails| declaration defines publication and indexing information about the article, in |key=value| form (see \tabref{tab:jotdetails}).
 \begin{lstlisting}
     \jotdetails{_key-value info_}
-\end{lstlisting}\ 
+\end{lstlisting}
 
-{\centering
+\begin{table}\centering
     \begin{tabularx}{\linewidth-2cm}{llX}
         \toprule{}
         Key & Type & Value \\
@@ -226,9 +240,12 @@ The |\jotdetails| declaration defines publication and indexing information about
         % \midrule
         \code{firstpage} & number & First page of this article, as placed in the full journal issue. \\
         \code{doi} & string & \caps{doi} identifier for the paper, without the resolver prefix \caps{url}. \\
-        \code{url} & \caps{url} & Address of the paper in the \caps{jot} web site. \\
+        \code{url} & \caps{url} & Address of the paper in the \JOT web site. \\
         \bottomrule
-    \end{tabularx}\par}
+    \end{tabularx}
+    \caption{Option keys for \code{jotdetails}.}
+    \label{tab:jotdetails}
+\end{table}
 
 
 \subsection{Appendices and bibliography}
@@ -236,6 +253,7 @@ The |\jotdetails| declaration defines publication and indexing information about
 Any appendices follow the |\backmatter| declaration, which takes care of calling |\appendix|.
 
 The bibliographic references follow the appendices; you can either adopt the Bib\TeX{} way as shown here, or use the |thebibliography| environment directly, but in any case, you should respect the |alpha| style for reference keys.
+
 
 \subsection{Author biographies and acknowledgments}
 
@@ -245,60 +263,64 @@ For the camera ready version, think of adjusting the layout to the quantity of t
 Following this, you can use the |acknowledgments| environment to mention collaborations, grants, etc.
 
 
+
+
 \section{Floats and program code}
 
 \subsection{Very wide floats}
 
 Usually you want figures and tables to occupy their natural width.
-When the figure or the table is quite large, however, you should force it to be as wide as the text, by scaling the graphics or using the |tabularx| package:
-
+When a figure is quite large, however, you should prevent it from overhanging in the margin, by scaling the graphics to the text width:
 \begin{lstlisting}
-    \includegraphics[width=\linewidth]{_$\cdots$_}
-    \begin{tabularx}{\linewidth}{_$\cdots$_}
-        _see the tabularx documentation for the X column specifier_
-    \end{tabularx}
+    \begin{figure}
+        \includegraphics[width=\linewidth]{_$\cdots$_}
+        \caption{_$\cdots$_}
+    \end{figure}
 \end{lstlisting}
+For tables, you can control the table width using the |tabularx| package.
 
-If a figure or a table really requires lots of horizontal space, you can use the |fullwidth| environment to temporarily reduce the margins, as shown in Figure~\ref{fig:fullwidth}.
-\begin{figure}
-    \leftarrowfill\ default |\linewidth| in text and floats \rightarrowfill
+Exceptionally, if a figure or a table really needs to be wider than the text to be legible, you can wrap the graphics or tabular in a |fullwidth| environment, to temporarily reduce the margins. The effect of |fullwidth| is shown in \figref{fig:fullwidth}.
+
+\begin{figure}[tb]
     \begin{fullwidth}
         \leftarrowfill\ |\linewidth| in the |fullwidth| environment \rightarrowfill
     \end{fullwidth}
+    \leftarrowfill\ default |\linewidth| in text and floats \rightarrowfill
     \caption{Changing the available horizontal space using the \code{fullwidth} environment. Pay attention to not include the caption inside \code{fullwidth}, else it could produce very long lines in small size, which is difficult to read.}
     \label{fig:fullwidth}
 \end{figure}
 
 
 \subsection{Displaying code}
-alltt
-listings
+
+The \jotcls sets up the |listings| package with generic defaults for simple, clean-looking listings.
+Line numbers are pre-configured, and can be activated by adding |style=numbers| either to the |\lstset| declaration or to the options of individual listings, as needed.
+You will probably need some additional configuration to indicate the language of your listings, and e.g. to highlight parts of code; please refer to the documentation of |listings| for more precisions, but keep the number of different text styles to a minimum.\footnote{Highlighting is based on visual contrast and thus relies on scarcity to be effective.}
+
+
 
 
 \section{Various recommendations, good practices}
 
 \subsection{Encodings and language}
-inputenc
-babel
+
+Even though \JOT is an English publication, it's best to embrace internationalization, and have the correct |inputenc| and |babel| package declarations in your article. We recommend writing your \LaTeX{} source code in an \caps{utf-8} editor, but other encodings are fine, as long as they are correctly explicited in the document preamble.
+\begin{lstlisting}
+    \usepackage[utf8]{inputenc}
+    \usepackage[english]{babel}
+\end{lstlisting}
+
 
 \subsection{Better typography}
-chicago
-minimalism
-tables
-microtype
+
+In typography, attention to detail pays, but also visual simplicity and homogeneity.
+With \LaTeX{} it is often tempting to use different fonts for similar concepts like classes and files, or mathematical properties or propositions.
+It's best to keep the number of different text styles to a minimum: besides the default text font, |\texttt| and |\emph| should cover most needs.
+
+Tables or graphics with too many lines hamper legibility; to minimize \emph{chartjunk} and maximize \emph{data ink}, use the |booktabs| package and rely on spacing to visually separate columns \cite{tufte,chicago}.
+% microtype
 
 
-
-\section{Not Yet Implemented}
-
-\begin{itemize}
-    \item title and logo
-	\item copyright notice
-	\item citation data, including DOI/Web URL
-    \item various aesthetic choices, captions, section references using §…
-    % \item authors and affiliations
-    % \item authors bios at end
-\end{itemize}
 
 
 \backmatter
@@ -307,6 +329,7 @@ microtype
 \bibliographystyle{alpha}
 \bibliography{jot-manual}
 
+\newpage
 \abouttheauthors
 
 \begin{acknowledgments}

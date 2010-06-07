@@ -8,20 +8,22 @@
 
 \LoadClass[10pt,twoside]{article}
 
-\RequirePackage{keyval}
-\RequirePackage{ifthen}
-\RequirePackage{hyperref}
-\RequirePackage{refcount}
-\RequirePackage{geometry}
-\RequirePackage{soul}
-\RequirePackage{ragged2e}
-\RequirePackage{graphicx}
-\RequirePackage{xcolor}
-\RequirePackage{eso-pic}
-% \RequirePackage[grid,texcoord]{eso-pic}
-\RequirePackage{placeins}
-\RequirePackage{wrapfig}
 \RequirePackage{calc}
+\RequirePackage{caption}    % captionsetup
+\RequirePackage{eso-pic}    % banner on 1st page
+\RequirePackage{geometry}
+\RequirePackage{graphicx}
+\RequirePackage{hyperref}
+\RequirePackage{ifthen}
+\RequirePackage{keyval}
+\RequirePackage{listings}
+\RequirePackage{placeins}   % floats before appendices
+\RequirePackage{ragged2e}   % \RaggedRight... better ragged text
+\RequirePackage{refcount}   % number of last page
+\RequirePackage{soul}       % nice spaced small caps
+\RequirePackage{wrapfig}    % author pictures
+\RequirePackage{xcolor}
+% \RequirePackage[grid,texcoord]{eso-pic}
 % \RequirePackage{varioref}
 
 %%%% user commands
@@ -191,19 +193,13 @@
 
 \hypersetup{
     breaklinks,
-    % colorlinks,
+    colorlinks,
     urlcolor=externallinkcolor,
     linkcolor=internallinkcolor,
     filecolor=externallinkcolor,
     citecolor=internallinkcolor,
 }
 
-%% varioref:
-% \labelformat{section}{\textsection\,#1}
-% \labelformat{subsection}{\textsection\,#1}
-% \labelformat{subsubsection}{\textsection\,#1}
-% \labelformat{figure}{figure\,#1}
-% \labelformat{table}{table\,#1}
 
 
 \let\titlefamily\sffamily
@@ -277,9 +273,30 @@
         \item\relax}
     {\endlist}
 
-%% captions
-\def\fnum@figure{{\titlefamily\figurename\nobreakspace\thefigure}}
-\def\fnum@table{{\titlefamily\tablename\nobreakspace\thetable}}
+\captionsetup{
+    format=plain,
+    indention=1.5em,
+    labelsep=endash,
+    justification=RaggedRight,
+    font={normalfont,small},
+    labelfont=sf, % same as \titlefamily
+}
+\captionsetup[listings]{position=above}
+
+\lstset{
+    basicstyle={\ttfamily},
+    columns=fullflexible,
+    xleftmargin=1cm,
+    % gobble=4,
+    % escapeinside={_}{_},
+    % escapebegin={\rmfamily\textlangle\itshape},
+    % escapeend={\upshape\textrangle},
+}
+\lstdefinestyle{numbers}{
+    numbers=left,
+    numberstyle={\sffamily\footnotesize},
+    numbersep=5mm,
+}
 
 %% title page and typesetting author info
 
@@ -430,6 +447,7 @@
     }%
     \date{}% should customize \maketitle
     \maketitle
+    \raggedbottom
 }
 \AtEndDocument{%
     \label{jot:lastpage}%
@@ -440,3 +458,14 @@
 
 % various convenience markup
 \newcommand{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
+
+%% varioref:
+% \labelformat{section}{\textsection\,#1}
+% \labelformat{subsection}{\textsection\,#1}
+% \labelformat{subsubsection}{\textsection\,#1}
+% \labelformat{figure}{figure\,#1}
+% \labelformat{table}{table\,#1}
+\newcommand\secref[1]{\sectionname~\ref{#1}}
+\newcommand\figref[1]{\figurename~\ref{1}}
+\newcommand\tabref[1]{\tablename~\ref{#1}}
+\newcommand\lstref[1]{\listingname~\ref{#1}}
