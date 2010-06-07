@@ -268,6 +268,15 @@
         {-1em}%
         {\normalfont\normalsize\bfseries}}
 
+%% floats
+
+\newenvironment{fullwidth}
+    {\list{}{%
+            \leftmargin-2cm
+            \rightmargin\leftmargin}
+        \item\relax}
+    {\endlist}
+
 %% captions
 \def\fnum@figure{{\titlefamily\figurename\nobreakspace\thefigure}}
 \def\fnum@table{{\titlefamily\tablename\nobreakspace\thetable}}

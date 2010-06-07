@@ -245,6 +245,36 @@ For the camera ready version, think of adjusting the layout to the quantity of t
 Following this, you can use the |acknowledgments| environment to mention collaborations, grants, etc.
 
 
+\section{Floats and program code}
+
+\subsection{Very wide floats}
+
+Usually you want figures and tables to occupy their natural width.
+When the figure or the table is quite large, however, you should force it to be as wide as the text, by scaling the graphics or using the |tabularx| package:
+
+\begin{lstlisting}
+    \includegraphics[width=\linewidth]{_$\cdots$_}
+    \begin{tabularx}{\linewidth}{_$\cdots$_}
+        _see the tabularx documentation for the X column specifier_
+    \end{tabularx}
+\end{lstlisting}
+
+If a figure or a table really requires lots of horizontal space, you can use the |fullwidth| environment to temporarily reduce the margins, as shown in Figure~\ref{fig:fullwidth}.
+\begin{figure}
+    \leftarrowfill\ default |\linewidth| in text and floats \rightarrowfill
+    \begin{fullwidth}
+        \leftarrowfill\ |\linewidth| in the |fullwidth| environment \rightarrowfill
+    \end{fullwidth}
+    \caption{Changing the available horizontal space using the \code{fullwidth} environment. Pay attention to not include the caption inside \code{fullwidth}, else it could produce very long lines in small size, which is difficult to read.}
+    \label{fig:fullwidth}
+\end{figure}
+
+
+\subsection{Displaying code}
+alltt
+listings
+
+
 \section{Various recommendations, good practices}
 
 \subsection{Encodings and language}
@@ -257,9 +287,6 @@ minimalism
 tables
 microtype
 
-\subsection{Displaying code}
-alltt
-listings
 
 
 \section{Not Yet Implemented}
