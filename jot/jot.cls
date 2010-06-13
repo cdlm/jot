@@ -9,6 +9,7 @@
 
 \LoadClass[10pt,twoside]{article}
 
+\RequirePackage{booktabs}
 \RequirePackage{calc}
 \RequirePackage{caption}    % captionsetup
 \RequirePackage{eso-pic}    % banner on 1st page
@@ -181,9 +182,9 @@
     % letterpaper,
     % asymmetric,
     body={13cm,21cm}, %golden ratio    2x ratio: body={12cm,24cm},
-    top=3cm, centering,%inner=3cm,
+    top=3.5cm, centering,%inner=3cm,
     ignoreall, marginpar=30mm, marginparsep=5mm, %marginpar=42mm, marginparsep=6mm,
-    head=10mm, headsep=10mm, foot=20mm,
+    head=10mm, headsep=15mm, foot=15mm,
     columnsep=5mm
 }
 
@@ -287,7 +288,8 @@
 \lstset{
     basicstyle={\ttfamily},
     columns=fullflexible,
-    xleftmargin=1cm,
+    captionpos=b,
+    abovecaptionskip=\medskipamount,
     % gobble=4,
     % escapeinside={_}{_},
     % escapebegin={\rmfamily\textlangle\itshape},
@@ -298,7 +300,11 @@
     numberstyle={\sffamily\footnotesize},
     numbersep=5mm,
 }
-
+\lstdefinestyle{float}{
+    float=tb,
+    frame=tb,
+    % backgroundcolor=\color{lightgray}
+}
 %% title page and typesetting author info
 
 %% short way to typeset \and for headers & metadata
@@ -466,7 +472,3 @@
 % \labelformat{subsubsection}{\textsection\,#1}
 % \labelformat{figure}{figure\,#1}
 % \labelformat{table}{table\,#1}
-\newcommand\secref[1]{\sectionname~\ref{#1}}
-\newcommand\figref[1]{\figurename~\ref{1}}
-\newcommand\tabref[1]{\tablename~\ref{#1}}
-\newcommand\lstref[1]{\listingname~\ref{#1}}

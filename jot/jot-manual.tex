@@ -88,20 +88,21 @@ Besides pdf\TeX{}, other \TeX{} engines or backends like \code{dvips} or \code{d
 The \jotcls class requires the following packages, which are all part of the standard \TeX{live} contents:
 
 {\centering
-    \begin{tabular}{l@{\qquad}l@{\qquad}l}
-        \code{calc}
+    \begin{tabular}{l@{\qquad}l@{\qquad}l@{\qquad}l}
+        \code{booktabs}
+        & \code{calc}
         & \code{caption}
         & \code{eso-pic} \\
         \code{geometry}
         & \code{graphicx}
-        & \code{hyperref} \\
-        \code{ifthen}
-        & \code{keyval}
-        & \code{listings} \\
-        \code{placeins}
-        & \code{ragged2e}
-        & \code{refcount} \\
-        \code{soul}
+        & \code{hyperref}
+        & \code{ifthen} \\
+        \code{keyval}
+        & \code{listings}
+        & \code{placeins}
+        & \code{ragged2e} \\
+        \code{refcount}
+        & \code{soul}
         & \code{wrapfig}
         & \code{xcolor}
     \end{tabular}\par}
@@ -111,9 +112,11 @@ The \jotcls class requires the following packages, which are all part of the sta
 
 \section{General document structure}
 
-The \jotcls class builds on the standard \file{article.cls} from \LaTeX, so the document structure is pretty standard. The main differences concern how to declare the title, authors, affiliations, and publication information, and the end of the document. See the |template.tex| file in the \jotcls distribution for a more complete, reusable starting point.
+The \jotcls class builds on the standard \file{article.cls} from \LaTeX, so the document structure is pretty standard. The main differences concern how to declare the title, authors, affiliations, and publication information, and the end of the document. See \autoref{lst:template}, as well as the |template.tex| file in the \jotcls distribution for a more complete, reusable starting point.
 
-\begin{lstlisting}
+\begin{lstlisting}[style=float,
+        caption={Template for a new article main source file.},
+        label=lst:template]
     \documentclass{jot}
     _packages and preamble declarations_
     
@@ -218,26 +221,24 @@ Keep the \parameter{description text} compact vertically, two or three lines at 
 
 \subsection{Publication information}
 
-The |\jotdetails| declaration defines publication and indexing information about the article, in |key=value| form (see \tabref{tab:jotdetails}).
+The |\jotdetails| declaration defines publication and indexing information about the article, in |key=value| form (see \autoref{tab:jotdetails}).
 \begin{lstlisting}
     \jotdetails{_key-value info_}
 \end{lstlisting}
 
 \begin{table}\centering
     \begin{tabularx}{\linewidth-2cm}{llX}
-        \toprule{}
+        \toprule
         Key & Type & Value \\
-        \midrule{}
+        \midrule
         \code{year} & number & Publication year, \\
         \code{volume} & number & \dots volume, \\
         \code{number} & number & \dots number of the issue. \\
         \\
-        % \midrule
         \code{received} & date & Dates of initial submission, \\
         \code{published} & date & \dots final publication, \\
         \code{revised} & date & \dots and latest revision of the paper. \\
         \\
-        % \midrule
         \code{firstpage} & number & First page of this article, as placed in the full journal issue. \\
         \code{doi} & string & \caps{doi} identifier for the paper, without the resolver prefix \caps{url}. \\
         \code{url} & \caps{url} & Address of the paper in the \JOT web site. \\
@@ -279,7 +280,7 @@ When a figure is quite large, however, you should prevent it from extending into
 \end{lstlisting}
 For tables, you can control the table width using the |tabularx| package.
 
-Exceptionally, if a figure or a table really needs to be wider than the text to be legible, you can wrap the graphics or tabular in a |fullwidth| environment, to temporarily reduce the margins. The effect of |fullwidth| is shown in \figref{fig:fullwidth}.
+Exceptionally, if a figure or a table really needs to be wider than the text to be legible, you can wrap the graphics or tabular in a |fullwidth| environment, to temporarily reduce the margins. The effect of |fullwidth| is shown in \autoref{fig:fullwidth}.
 
 \begin{figure}[tb]
     \begin{fullwidth}
@@ -294,7 +295,16 @@ Exceptionally, if a figure or a table really needs to be wider than the text to 
 \subsection{Displaying code}
 
 The \jotcls sets up the |listings| package with generic defaults for simple, clean-looking listings.
+There are three cases where you might want to display code. The first is to mention program entities in the middle of a sentence; for this, use the |\lstinline| command and associated facilities from |listings|. Note however that this command will not work in some places like float captions, so we advise you to define an alias to the basic font-changing command, like so:
+\begin{lstlisting}
+    \newcommand\code[1]{\texttt{#1}}
+\end{lstlisting}
+
+The second case is to display a large piece of code; this requires a floating listing, which you will get by adding the |style=float| option to either the |lstlisting| environment or the |\lstinputlisting| command. Since this is a float, remember to set the |caption| and |label| options as well.
 Line numbers are pre-configured, and can be activated by adding |style=numbers| either to the |\lstset| declaration or to the options of individual listings, as needed.
+
+Finally, this should be rarely needed in most articles, but if you need to display short code excerpts in the flow of paragraphs, like most examples in this document, you can just use the regular |lstlisting| environment without special options.
+
 You will probably need some additional configuration to indicate the language of your listings, and e.g. to highlight parts of code; please refer to the documentation of |listings| for more precisions, but keep the number of different text styles to a minimum.\footnote{Highlighting is based on visual contrast and thus relies on scarcity to be effective.}
 
 
@@ -311,13 +321,23 @@ Even though \JOT is an English publication, it's best to embrace internationaliz
 \end{lstlisting}
 
 
+\subsection{References}
+
+The |hyperref| package provides the |\autoref| command, that replaces |\ref| but will automatically format the reference as needed, while making the whole reference a link, instead of just the number. So, instead of typing |see Figure~\ref{foo}| by hand, just use |see \autoref{foo}| instead. This works for other kinds of floats as well.
+
+
 \subsection{Better typography}
 
 In typography, attention to detail pays, but also visual simplicity and homogeneity.
 With \LaTeX{} it is often tempting to use different fonts for similar concepts like classes and files, or mathematical properties or propositions.
 It's best to keep the number of different text styles to a minimum: besides the default text font, |\texttt| and |\emph| should cover most needs.
 
-Tables or graphics with too many lines hamper legibility; to minimize \emph{chartjunk} and maximize \emph{data ink}, use the |booktabs| package and rely on spacing to visually separate columns \cite{tufte,chicago}.
+Tables or graphics with too many lines hamper legibility \cite{tufte,chicago}; to help minimize \emph{chartjunk} and maximize \emph{data ink}, \jotcls loads the |booktabs| package for you. To take advantage of it:
+\begin{itemize}
+    \item do not specify vertical rules in tables;
+    \item use |\toprule|, |\bottomrule|, and few |\middlerule| in between, instead of |\hline|;
+    \item rely on spacing and column alignment to visually separate columns (use |@{\quad}| as a column separator).
+\end{itemize}
 % microtype
 
 
