@@ -1,3 +1,4 @@
+% $Id$
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{jot}[%
     2010/05/01 0.1
@@ -93,7 +94,7 @@
 \newcommand\jot@firstpage{\getpagerefnumber{jot:firstpage}}
 \newcommand\jot@lastpage{\getpagerefnumber{jot:lastpage}}
 \newcommand\jot@runningcitation{%
-    \href{\jot@url}{\jot@journalname, vol.~\jot@volume, no.~\jot@number, \jot@year}.}
+    \href{\jot@url}{\jot@journalname, vol.~\jot@volume, no.~\jot@number, \jot@year}}
 
 % setting author info
 
@@ -452,8 +453,8 @@
 \AtEndDocument{%
     \label{jot:lastpage}%
     \vfill
-    \centering
-    \includegraphics[height=\baselineskip]{jot-umlsquare}%
+    % \centering
+    % \includegraphics[height=\baselineskip]{jot-umlsquare}%
 }
 
 % various convenience markup
