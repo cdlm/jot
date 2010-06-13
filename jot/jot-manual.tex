@@ -55,7 +55,7 @@
 
 \author[affiliation={inria,scg}, nowrap]
     {Lynn V. Siebel}
-    {is a fictive author who kindly accepted to demonstrate how the \jotcls class handles authors with multiple affiliations, but whose smile shall remain unseen.}
+    {is a fictitious author who kindly accepted to demonstrate how the \jotcls class handles authors with multiple affiliations, but whose smile shall remain unseen.}
 
 \affiliation{inria}{RMoD, Inria Lille Nord Europe, France\\ \url{http://rmod.lille.inria.fr}}
 \affiliation{scg}{Software Composition Group, University of Bern, Switzerland\\ \url{http://scg.unibe.ch}}
@@ -81,7 +81,7 @@
 \section{Installation and compatibility}
 
 The \jotcls project is hosted online at \url{http://github.com/cdlm/jot/}. You can download stable versions from there, or directly clone the development sources from the version control repository.
-To install the package, simply copy the files somewhere \TeX{} can find them.
+To install the package, simply copy the files somewhere where \TeX{} can find them.
 
 The class is developed and tested using the pdf\LaTeX{} toolchain, which is readily available in any modern \TeX{} distribution; the author uses \href{http://www.tug.org/texlive/}{\TeX{live}} on a Mac.
 Besides pdf\TeX{}, other \TeX{} engines or backends like \code{dvips} or \code{dvipdfm} \emph{should} work but are not supported.\footnote{The code does nothing to break them, at least not intentionally, so authors are free to work; nevertheless, in case the journal editors have to recompile articles from the \LaTeX{} sources, it's best if all submissions are guaranteed to compile cleanly with a single engine.}
@@ -147,7 +147,7 @@ We describe the syntax of the commands in details in the next section. For now, 
 \begin{itemize}
     \item title and author information is declared in the preamble and is automatically typeset; there is no need to call the |\maketitle| macro at the beginning of the document;
     \item authors are declared independently, using one |\author| declaration each, and similarly for affiliations;
-    \item the |\jotdetails| command specifies journal publication information such as year, volume, number…
+    \item the |\jotdetails| command specifies journal publication information such as year, volume, number\dots
 \end{itemize}
 
 The main body of the article is organized just like with the standard |article| class, until we get to |\backmatter|.
@@ -229,13 +229,13 @@ The |\jotdetails| declaration defines publication and indexing information about
         Key & Type & Value \\
         \midrule{}
         \code{year} & number & Publication year, \\
-        \code{volume} & number & …volume, \\
-        \code{number} & number & …number of the issue. \\
+        \code{volume} & number & \dots volume, \\
+        \code{number} & number & \dots number of the issue. \\
         \\
         % \midrule
         \code{received} & date & Dates of initial submission, \\
-        \code{published} & date & …final publication, \\
-        \code{revised} & date & …and latest revision of the paper. \\
+        \code{published} & date & \dots final publication, \\
+        \code{revised} & date & \dots and latest revision of the paper. \\
         \\
         % \midrule
         \code{firstpage} & number & First page of this article, as placed in the full journal issue. \\
@@ -257,8 +257,8 @@ The bibliographic references follow the appendices; you can either adopt the Bib
 
 \subsection{Author biographies and acknowledgments}
 
-The |\abouttheauthors| declaration will typeset the authors bibliographies from the data given in the preamble.
-For the camera ready version, think of adjusting the layout to the quantity of text for each author, by toggling the |nowrap| option in the |\author| declarations.
+The |\abouttheauthors| declaration will typeset the authors' bibliographies from the data given in the preamble.
+For the camera-ready version, think of adjusting the layout to the quantity of text for each author, by toggling the |nowrap| option in the |\author| declarations.
 
 Following this, you can use the |acknowledgments| environment to mention collaborations, grants, etc.
 
@@ -270,7 +270,7 @@ Following this, you can use the |acknowledgments| environment to mention collabo
 \subsection{Very wide floats}
 
 Usually you want figures and tables to occupy their natural width.
-When a figure is quite large, however, you should prevent it from overhanging in the margin, by scaling the graphics to the text width:
+When a figure is quite large, however, you should prevent it from extending into the margin, by scaling the graphics to the text width:
 \begin{lstlisting}
     \begin{figure}
         \includegraphics[width=\linewidth]{_$\cdots$_}
