@@ -28,14 +28,14 @@
 \newcommand\code[1]{\texttt{#1}}
 \let\file\code
 \newcommand\jotcls{\file{jot.cls}\xspace}
-\newcommand\JOT{\caps{jot}\xspace}
+\newcommand\JOT{\caps{JOT}\xspace}
 
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
 
 \author[affiliation=inria, photo=damien]
     {Damien Pollet}
-    {   is an assistant professor at the Université de Lille~1, France.
+    {   is an assistant professor at the Universit\'e de Lille~1, France.
     
         When he's not busy hacking the \LaTeX{} document class for \JOT and maintaining various web servers, he teaches software engineering or does research in the RMoD group, on better constructs and tools for dynamic programming languages, as well as on program visualization and reengineering.
         
@@ -43,12 +43,12 @@
 
 \author[affiliation=scg, photo=oscar, nowrap]
     {Oscar Nierstrasz}
-    {   is a professor of computer science at the Institute of Computer Science (IAM) of the University of Bern, where he founded the Software Composition Group in 1994. 
+    {   is a professor of computer science at the Institute of Computer Science (\caps{IAM}) of the University of Bern, where he founded the Software Composition Group in 1994. 
 
         \url{http://scg.unibe.ch/staff/oscar}.}
 
 \author[affiliation=inria, photo=stephane, nowrap]
-    {Stéphane Ducasse}
+    {St\'ephane Ducasse}
     {   is a research director at Inria Lille, where he founded the RMoD group in 2007.
     
         \url{http://stephane.ducasse.free.fr}.}
@@ -169,7 +169,7 @@ Define the title the usual way, using |\title|; if your title spans multiple lin
 \begin{lstlisting}
     \title{_text_}
 \end{lstlisting}
-The main title is automatically used in page headers and \caps{pdf} metadata, but you can override it using the optional declarations |\runningtitle| or |\pdftitle|. Usually only the |\runningtitle| override will be necessary because |\pdftitle| takes the same value by default.
+The main title is automatically used in page headers and \caps{PDF} metadata, but you can override it using the optional declarations |\runningtitle| or |\pdftitle|. Usually only the |\runningtitle| override will be necessary because |\pdftitle| takes the same value by default.
 \begin{lstlisting}
     \runningtitle{_text_}
     \pdftitle{_text_}
@@ -202,7 +202,7 @@ The optional parameter \parameter{options} is a list of comma-separated |key=val
         Specify this option to adjust the layout of the biography text, if it does not flow under the picture by at least one or a couple lines.
 \end{itemize}
 
-Finally, as with the title, you can override the authors list in the headings or \caps{pdf} metadata. Both can take either the final text or an |\and|-separated list of authors.
+Finally, as with the title, you can override the authors list in the headings or \caps{PDF} metadata. Both can take either the final text or an |\and|-separated list of authors.
 \begin{lstlisting}
     \runningauthor{_names_}
     \pdfauthor{_names_}
@@ -240,8 +240,8 @@ The |\jotdetails| declaration defines publication and indexing information about
         \code{revised} & date & \dots and latest revision of the paper. \\
         \\
         \code{firstpage} & number & First page of this article, as placed in the full journal issue. \\
-        \code{doi} & string & \caps{doi} identifier for the paper, without the resolver prefix \caps{url}. \\
-        \code{url} & \caps{url} & Address of the paper in the \JOT web site. \\
+        \code{doi} & string & \caps{DOI} identifier for the paper, without the resolver prefix \caps{URL}. \\
+        \code{url} & \caps{URL} & Address of the paper in the \JOT web site. \\
         \bottomrule
     \end{tabularx}
     \caption{Option keys for \code{jotdetails}.}
@@ -314,7 +314,7 @@ You will probably need some additional configuration to indicate the language of
 
 \subsection{Encodings and language}
 
-Even though \JOT is an English publication, it's best to embrace internationalization, and have the correct |inputenc| and |babel| package declarations in your article. We recommend writing your \LaTeX{} source code in an \caps{utf-8} editor, but other encodings are fine, as long as they are correctly explicited in the document preamble.
+Even though \JOT is an English publication, it's best to embrace internationalization, and have the correct |inputenc| and |babel| package declarations in your article. We recommend writing your \LaTeX{} source code in an \caps{UTF-8} editor, but other encodings are fine, as long as they are correctly explicited in the document preamble.
 \begin{lstlisting}
     \usepackage[utf8]{inputenc}
     \usepackage[english]{babel}
@@ -346,14 +346,14 @@ Tables or graphics with too many lines hamper legibility \cite{tufte,chicago}; t
 \backmatter
 
 \nocite{*}
-\bibliographystyle{alpha}
+\bibliographystyle{plain}
 \bibliography{jot-manual}
 
-\newpage
+% \newpage
 \abouttheauthors
 
 \begin{acknowledgments}
-    The style and code of \code{jot.cls} was partially inspired from the previous \code{jotarticle.cls} developed at ETH~Zurich by Susanne Cech, and from the class \code{toc.cls} for the \emph{Theory of Computing} journal.
+    The style and code of \code{jot.cls} was partially inspired from the previous \code{jotarticle.cls} developed at \caps{ETH}~Zurich by Susanne Cech, and from the class \code{toc.cls} for the \emph{Theory of Computing} journal.
 \end{acknowledgments}
 
 \end{document}
