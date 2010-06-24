@@ -433,8 +433,13 @@
 }
 
 \renewenvironment{abstract}
-    {\quotation\noindent\ignorespaces}
+    {\quotation\noindent{\titlefamily Abstract}\quad\ignorespaces}
     {\endquotation}
+
+\newcommand{\keywords}[1]{%
+    \begin{quotation}\noindent{\titlefamily Keywords}\quad\ignorespaces
+    #1%
+    \end{quotation}}
 
 \newcommand{\backmatter}{%
      \FloatBarrier
