@@ -251,9 +251,13 @@ The |\jotdetails| declaration defines publication and indexing information about
 
 \subsection{Appendices and bibliography}
 
-Any appendices follow the |\backmatter| declaration, which takes care of calling |\appendix|.
+Any appendices immediately follow the |\backmatter| declaration; you don't need to call |\appendix|.
 
-The bibliographic references follow the appendices; you can either adopt the Bib\TeX{} way as shown here, or use the |thebibliography| environment directly, but in any case, you should respect the |alpha| style for reference keys.
+Use the |alpha| style for reference keys:
+\begin{lstlisting}
+    \bibliographystyle{alpha}
+\end{lstlisting}
+The bibliographic references follow the appendices; you can either adopt the Bib\TeX{} way as shown here, or use the |thebibliography| environment directly.
 
 
 \subsection{Author biographies and acknowledgments}
@@ -321,7 +325,7 @@ Even though \JOT is an English publication, it's best to embrace internationaliz
 \end{lstlisting}
 
 
-\subsection{References}
+\subsection{Referring to sections and floats}
 
 The |hyperref| package provides the |\autoref| command, that replaces |\ref| but will automatically format the reference as needed, while making the whole reference a link, instead of just the number. So, instead of typing |see Figure~\ref{foo}| by hand, just use |see \autoref{foo}| instead. This works for other kinds of floats as well.
 
