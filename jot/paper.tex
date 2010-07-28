@@ -1,0 +1,66 @@
+\documentclass{jot}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{microtype} % optional, for aesthetics
+\usepackage{tabularx} % nice to have
+\usepackage{booktabs} % necessary for style
+% \usepackage{graphicx}
+% \graphicspath{{./figures/}}
+% \usepackage{listings}
+% \lstset{...}
+
+% \newcommand\code[1]{\texttt{#1}}
+% \let\file\code
+
+
+%%% Article metadata
+\title{TITLE}
+\runningtitle{RUNNING TITLE}
+
+\author[affiliation=orgname, nowrap] % , photo=FILE]
+    {First Author}
+    {is ...
+    Contact him at \email{EMAIL}, or visit \url{URL}.}
+
+\affiliation{orgname}{ORGANISATION}
+
+\runningauthor{RUNNING AUTHOR}
+
+\jotdetails{
+    volume=N,
+    number=M,
+    year=2010,
+    firstpage=51,
+    url={http://www.jot.fm/contents/issue\_2010\_NN/articleNN.html}
+}
+
+
+\begin{document}
+
+\begin{abstract}
+ABSTRACT
+\end{abstract}
+
+\keywords
+Template; Keywords.
+
+
+\section{SECTION}
+
+YOUR PAPER HERE
+
+
+\backmatter
+
+\bibliographystyle{alpha}
+\bibliography{YOURBIB}
+
+\abouttheauthors
+
+\begin{acknowledgments}
+ACKS
+\end{acknowledgments}
+
+\end{document}
