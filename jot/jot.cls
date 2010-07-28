@@ -27,6 +27,7 @@
 \RequirePackage{xcolor}
 % \RequirePackage[grid,texcoord]{eso-pic}
 % \RequirePackage{varioref}
+\RequirePackage[scaled]{helvet}
 
 %%%% user commands
 \@onlypreamble{\title}          % \title{...}
@@ -203,7 +204,9 @@
 }
 
 
-
+% fonts
+\renewcommand{\sfdefault}{phv} % Helvetica
+\renewcommand{\rmdefault}{ptm} % Times
 \let\titlefamily\sffamily
 
 

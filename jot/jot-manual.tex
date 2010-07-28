@@ -22,8 +22,12 @@
     escapeend=\paramend
 ]|
 
-\newcommand\parambegin{\rmfamily\textlangle\itshape}
-\newcommand\paramend{\upshape\textrangle}
+\let\oldtextlangle\textlangle
+\renewcommand{\textlangle}{{\fontfamily{txr}\selectfont\oldtextlangle}}
+\let\oldtextrangle\textrangle
+\renewcommand{\textrangle}{{\fontfamily{txr}\selectfont\oldtextrangle}}
+\newcommand\parambegin{\normalfont\textlangle\itshape}
+\newcommand\paramend{\normalfont\textrangle}
 \newcommand\parameter[1]{{\parambegin#1\paramend}}
 \newcommand\code[1]{\texttt{#1}}
 \let\file\code
