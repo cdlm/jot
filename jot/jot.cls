@@ -45,25 +45,25 @@
 %%%% Publication information
 
 \newcommand\jot@doiderefaddress{http://dx.doi.org/}
-\newcommand\jot@journalname{Journal of Object Technology}
-\newcommand\jot@journaldoiaddress{\jot@doiderefaddress\jot@journaldoi}
+\newcommand\jot@doijournalprefix{10.5381}
 \newcommand\jot@articledoiaddress{\jot@doiderefaddress\jot@doi}
+\newcommand\jot@journaldoiaddress{\jot@doiderefaddress\jot@journaldoi} % not used
+\newcommand\jot@journalname{Journal of Object Technology}
 \newcommand\jot@journaladdress{http://www.jot.fm}
-\newcommand\jot@journaldoi{xxx}
 \newcommand{\jot@cclicenseurl}{http://creativecommons.org/licenses/by/3.0/}
 \newcommand{\jot@publisher}{ETH~Zurich, Chair of Software Engineering}
 \newcommand{\jot@copyright}{\copyright\,JOT 2010}
 \newcommand{\jot@licenseurl}{\jot@journaladdress/copyright.html}
 
 % Initialize properties to default values
-\newcommand{\jot@year}{\@empty}
-\newcommand{\jot@volume}{\@empty}
-\newcommand{\jot@number}{\@empty}
-\newcommand{\jot@received}{\@empty}
-\newcommand{\jot@published}{\@empty}
-\newcommand{\jot@revised}{\@empty}
+\let\jot@year\@empty
+\let\jot@volume\@empty
+\let\jot@number\@empty
+\let\jot@received\@empty
+\let\jot@published\@empty
+\let\jot@revised\@empty
 \newcommand{\jot@declaredfirstpage}{1}
-\newcommand{\jot@doi}{\jot@journaldoiaddress}
+\let\jot@doi\@empty
 \newcommand{\jot@url}{\jot@journaladdress}
 
 % Declare keys for \jotdetails
@@ -75,6 +75,7 @@
 \define@key{jot@details@keys}{revised}{\renewcommand{\jot@revised}{#1}}
 \define@key{jot@details@keys}{firstpage}{\renewcommand{\jot@declaredfirstpage}{#1}}
 \define@key{jot@details@keys}{doi}{\renewcommand{\jot@doi}{#1}}
+\define@key{jot@details@keys}{doisuffix}{\renewcommand{\jot@doi}{\jot@doijournalprefix/#1}}
 \define@key{jot@details@keys}{url}{\renewcommand{\jot@url}{#1}}
 
 % argument is a comma seperated list of the type "volume=6,year=8,..."
@@ -90,12 +91,24 @@
 \newcommand{\pdftitle}[1]{\renewcommand{\jot@pdftitle}{#1}}
 \newcommand{\pdfauthor}[1]{\renewcommand{\jot@pdfauthor}{#1}}
 
+\newcommand\jot@doiorurl{%
+    \ifx\jot@doi\@empty \jot@url \else \jot@articledoiaddress \fi}
+\newcommand\jot@doiorurlhref{%
+    \ifx\jot@doi\@empty
+        Available at: \url{\jot@url}%
+    \else
+        \href{\jot@articledoiaddress}{doi:\jot@doi}
+    \fi}
+
 \newcommand\jot@runningtitle{\jot@title}
 \newcommand\jot@runningauthor{}
 \newcommand\jot@firstpage{\getpagerefnumber{jot:firstpage}}
 \newcommand\jot@lastpage{\getpagerefnumber{jot:lastpage}}
 \newcommand\jot@runningcitation{%
-    \href{\jot@url}{\jot@journalname, vol.~\jot@volume, no.~\jot@number, \jot@year}}
+    \href{\jot@doiorurl}{\jot@journalname
+        \ifx\jot@volume\@empty \else , vol.~\jot@volume\fi
+        \ifx\jot@number\@empty \else , no.~\jot@number\fi
+        \ifx\jot@year\@empty \else , \jot@year\fi}}
 
 % setting author info
 
@@ -235,7 +248,7 @@
             \jot@authors.\quad
             \emph{\jot@title}.\quad
             In \jot@runningcitation, pages~\jot@firstpage--\jot@lastpage.\quad
-            Available at \url{\jot@url}
+            \jot@doiorurlhref
         \end{minipage}%
         \hfil
     }%
