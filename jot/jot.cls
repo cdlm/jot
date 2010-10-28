@@ -95,9 +95,9 @@
     \ifx\jot@doi\@empty \jot@url \else \jot@articledoiaddress \fi}
 \newcommand\jot@doiorurlhref{%
     \ifx\jot@doi\@empty
-        Available at: \url{\jot@url}%
+        Available at \url{\jot@url}%
     \else
-        \href{\jot@articledoiaddress}{doi:\jot@doi}
+        \href{\jot@articledoiaddress}{\nolinkurl{doi:\jot@doi}}
     \fi}
 
 \newcommand\jot@runningtitle{\jot@title}
