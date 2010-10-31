@@ -9,7 +9,7 @@ jot/jot-manual.pdf: jot/jot.cls jot/jot-manual.tex jot/latexmkrc jot/manual/*
 		&& latexmk jot-manual
 
 tag:
-	git tag v${DATE}
+	git tag v${shell date "+%Y%m%d"}
 
 clean:
 	cd jot \
