@@ -1,7 +1,8 @@
-% $Id$
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{jot}[%
-    2010/05/01 0.1
+    2010/10/31 handling DOI
+    % 2010/05/01 initial version
+    Document class for submissions to the Journal of Object Technology
     (c) 2010 Damien Pollet, Inria / Univ. Lille 1, France
 ]
 
@@ -94,8 +95,9 @@
 \newcommand\jot@doiorurl{%
     \ifx\jot@doi\@empty \jot@url \else \jot@articledoiaddress \fi}
 \newcommand\jot@doiorurlhref{%
+    Available at
     \ifx\jot@doi\@empty
-        Available at \url{\jot@url}%
+        \url{\jot@url}%
     \else
         \href{\jot@articledoiaddress}{\nolinkurl{doi:\jot@doi}}
     \fi}
