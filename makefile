@@ -1,5 +1,7 @@
 .PHONY: all pdf tag clean realclean
 
+T = jot-latex-template
+
 all: pdf clean
 
 pdf: jot/jot-manual.pdf
@@ -18,3 +20,11 @@ clean:
 
 realclean: clean
 	rm -f jot/jot-manual.pdf
+
+# For the online version
+
+zip :
+	-rm -rf $T $T.zip
+	mkdir $T
+	cd jot; cp jot.cls *.bib *.tex *.jpg jot-manual.pdf ../$T
+	zip -y -r $T.zip $T
