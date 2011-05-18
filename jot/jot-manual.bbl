@@ -1,0 +1,39 @@
+\begin{thebibliography}{Knu86}
+
+\bibitem[Bri04]{bringhurst}
+Robert Bringhurst.
+\newblock {\em The Elements of Typographic Style}.
+\newblock Hartley \& Marks, 3.1 edition, 2004.
+
+\bibitem[chi03]{chicago}
+{\em The Chicago Manual of Style}.
+\newblock The University of Chicago Press, 15th edition, 2003.
+
+\bibitem[GM04]{companion}
+Michel Goossens and Frank Mittelbach.
+\newblock {\em The {\LaTeX} Companion}.
+\newblock Addison-Wesley, second edition, 2004.
+
+\bibitem[HK96]{designingbooks}
+Jost Hochilu and Robin Kinross.
+\newblock {\em Designing books: practice and theory}.
+\newblock Hyphen Press, 1996.
+
+\bibitem[Knu86]{texbook}
+Donald~Erwin Knuth.
+\newblock {\em The {\TeX}book}.
+\newblock Addison-Wesley, 1986.
+
+\bibitem[Nie10]{JOT:issue_2010_09/editorial}
+Oscar Nierstrasz.
+\newblock Ten things {I} hate about object-oriented programming.
+\newblock {\em Journal of Object Technology}, 9(5), September 2010.
+\newblock \href {http://dx.doi.org/10.5381/jot.2010.9.5.e1}
+  {\path{doi:10.5381/jot.2010.9.5.e1}}.
+
+\bibitem[Tuf01]{tufte}
+Edward~R. Tufte.
+\newblock {\em The Visual Display of Quantitative Information}.
+\newblock Graphics Press, 2nd edition, 2001.
+
+\end{thebibliography}

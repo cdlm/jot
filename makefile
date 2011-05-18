@@ -28,5 +28,5 @@ realclean: clean
 zip :
 	-rm -rf $T $T.zip
 	mkdir $T
-	cd jot; cp jot.cls *.bib *.tex *.jpg jot-manual.pdf ../$T
+	cd jot; cp -r README.* jot.cls *.bib *.tex jot-manual.pdf figures ../$T
 	zip -y -r $T.zip $T
