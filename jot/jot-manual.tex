@@ -8,6 +8,11 @@
 \usepackage{xspace}
 \usepackage{textcomp}
 \usepackage{listings}
+
+
+%%%
+%%%  Custom commands and package setup
+%%%
 \lstset{
     language=[LaTeX]TeX,
     escapeinside={_}{_},
@@ -15,7 +20,7 @@
     escapeend={\upshape\textrangle},
     gobble=4
 }
-\lstMakeShortInline[
+\lstMakeShortInline[ % typeset sequences |like this| as code
     escapeinside={_}{_},
     escapebegin=\parambegin,
     escapeend=\paramend
@@ -28,7 +33,12 @@
 \let\file\code
 \newcommand\jotcls{\file{jot.cls}\xspace}
 \newcommand\JOT{\caps{JOT}\xspace}
+\newcommand\githuburl{http://github.com/jotfm/jot}
 
+
+%%%
+%%%  Document & publication information
+%%%
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
 
@@ -66,9 +76,14 @@
     articleno=0,
     year=2010,
     % firstpage=51,
-    url={https://github.com/jotfm/jot}
+    % doi=10.5381/jot.2011.10.1.a1,
+    url={\githuburl}
 }
 
+
+%%%
+%%%  Manuscript
+%%%
 \begin{document}
 
 \begin{abstract}
@@ -80,7 +95,7 @@
 
 \section{Installation and compatibility}
 
-The \jotcls project is hosted online at \url{http://github.com/cdlm/jot/}. You can download stable versions from there, or directly clone the development sources from the version control repository.
+The \jotcls project is hosted online at \url{\githuburl}. You can download stable versions from there, or directly clone the development sources from the version control repository.
 To install the package, simply copy the files somewhere where \TeX{} can find them.
 
 The class is developed and tested using the pdf\LaTeX{} toolchain, which is readily available in any modern \TeX{} distribution; the author uses \href{http://www.tug.org/texlive/}{\TeX{live}} on a Mac.
@@ -223,6 +238,8 @@ Keep the \parameter{description text} compact vertically, two or three lines at 
 \subsection{Publication information}
 
 The |\jotdetails| declaration defines publication and indexing information about the article, in |key=value| form (see \autoref{tab:jotdetails}).
+Usually, you will just specify the article-specific part of the \caps{DOI} identifier with |doisuffix|, since all \JOT articles will have a \caps{DOI} of the form \makeatletter\code{\jot@doijournalprefix/doisuffix}\makeatother.
+The |url| key only serves as a fallback in the page footers when no \caps{DOI} was specified.
 \begin{lstlisting}
     \jotdetails{_key-value info_}
 \end{lstlisting}
@@ -253,8 +270,7 @@ The |\jotdetails| declaration defines publication and indexing information about
 \subsection{Appendices and bibliography}
 
 Any appendices immediately follow the |\backmatter| declaration; you don't need to call |\appendix|.
-
-Use the |alpha| style for reference keys:
+In the bibliography, use the |alpha| style for reference keys:
 \begin{lstlisting}
     \bibliographystyle{alpha}
 \end{lstlisting}
@@ -343,8 +359,8 @@ Tables or graphics with too many lines hamper legibility \cite{tufte,chicago}; t
     \item use |\toprule|, |\bottomrule|, and few |\middlerule| in between, instead of |\hline|;
     \item rely on spacing and column alignment to visually separate columns (use |@{\quad}| as a column separator).
 \end{itemize}
-% microtype
 
+The |microtype| package can help \LaTeX{} layout more compact paragraphs with fewer hyphenations.
 
 
 
