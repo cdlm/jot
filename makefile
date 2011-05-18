@@ -14,9 +14,7 @@ tag:
 	git tag v${shell date "+%Y%m%d"}
 
 clean:
-	cd jot \
-		&& latexmk -c \
-		&& rm -f jot-manual.bbl # latexmk fails to find it...
+	cd jot && latexmk -c
 	-rm -rf $T $T.zip
 	-rm -f jot/*.out jot/*.aux jot/*.out jot/*.log
 
