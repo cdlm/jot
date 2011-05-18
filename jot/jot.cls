@@ -1,8 +1,7 @@
+% $Id$
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{jot}[%
-    2010/10/31 handling DOI
-    % 2010/05/01 initial version
-    Document class for submissions to the Journal of Object Technology
+    2010/05/01 0.1
     (c) 2010 Damien Pollet, Inria / Univ. Lille 1, France
 ]
 
@@ -52,14 +51,15 @@
 \newcommand\jot@journalname{Journal of Object Technology}
 \newcommand\jot@journaladdress{http://www.jot.fm}
 \newcommand{\jot@cclicenseurl}{http://creativecommons.org/licenses/by/3.0/}
-\newcommand{\jot@publisher}{ETH~Zurich, Chair of Software Engineering}
-\newcommand{\jot@copyright}{\copyright\,JOT 2010}
+\newcommand{\jot@publisher}{AITO --- Association Internationale pour les Technologies Objets}
+\newcommand{\jot@copyright}{\copyright\,JOT 2011}
 \newcommand{\jot@licenseurl}{\jot@journaladdress/copyright.html}
 
 % Initialize properties to default values
 \let\jot@year\@empty
 \let\jot@volume\@empty
 \let\jot@number\@empty
+\let\jot@articleno\@empty
 \let\jot@received\@empty
 \let\jot@published\@empty
 \let\jot@revised\@empty
@@ -71,6 +71,7 @@
 \define@key{jot@details@keys}{year}{\renewcommand{\jot@year}{#1}}
 \define@key{jot@details@keys}{volume}{\renewcommand{\jot@volume}{#1}}
 \define@key{jot@details@keys}{number}{\renewcommand{\jot@number}{#1}}
+\define@key{jot@details@keys}{articleno}{\renewcommand{\jot@articleno}{#1}}
 \define@key{jot@details@keys}{received}{\renewcommand{\jot@received}{#1}}
 \define@key{jot@details@keys}{published}{\renewcommand{\jot@published}{#1}}
 \define@key{jot@details@keys}{revised}{\renewcommand{\jot@revised}{#1}}
@@ -92,12 +93,14 @@
 \newcommand{\pdftitle}[1]{\renewcommand{\jot@pdftitle}{#1}}
 \newcommand{\pdfauthor}[1]{\renewcommand{\jot@pdfauthor}{#1}}
 
+\newcommand\jot@pageprefix{%
+    \ifx\jot@articleno\@empty\@empty\else\jot@articleno:\fi}
+
 \newcommand\jot@doiorurl{%
     \ifx\jot@doi\@empty \jot@url \else \jot@articledoiaddress \fi}
 \newcommand\jot@doiorurlhref{%
-    Available at
     \ifx\jot@doi\@empty
-        \url{\jot@url}%
+        Available at \url{\jot@url}%
     \else
         \href{\jot@articledoiaddress}{\nolinkurl{doi:\jot@doi}}
     \fi}
@@ -249,7 +252,7 @@
             \let\\\relax
             \jot@authors.\quad
             \emph{\jot@title}.\quad
-            In \jot@runningcitation, pages~\jot@firstpage--\jot@lastpage.\quad
+            In \jot@runningcitation, pages~\jot@pageprefix\jot@firstpage--\jot@lastpage.\quad
             \jot@doiorurlhref
         \end{minipage}%
         \hfil

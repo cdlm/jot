@@ -8,11 +8,6 @@
 \usepackage{xspace}
 \usepackage{textcomp}
 \usepackage{listings}
-
-
-%%%
-%%%  Custom commands and package setup
-%%%
 \lstset{
     language=[LaTeX]TeX,
     escapeinside={_}{_},
@@ -20,7 +15,7 @@
     escapeend={\upshape\textrangle},
     gobble=4
 }
-\lstMakeShortInline[ % typeset sequences |like this| as code
+\lstMakeShortInline[
     escapeinside={_}{_},
     escapebegin=\parambegin,
     escapeend=\paramend
@@ -33,16 +28,11 @@
 \let\file\code
 \newcommand\jotcls{\file{jot.cls}\xspace}
 \newcommand\JOT{\caps{JOT}\xspace}
-\newcommand\githuburl{http://github.com/jotfm/jot}
 
-
-%%%
-%%%  Document & publication information
-%%%
 \title{Typesetting guidelines\\ for the Journal of Object Technology}
 \runningtitle{Typesetting guidelines for JOT}
 
-\author[affiliation=inria, photo=manual/damien]
+\author[affiliation=inria, photo=damien]
     {Damien Pollet}
     {   is an assistant professor at the Universit\'e de Lille~1, France.
     
@@ -50,13 +40,13 @@
         
         Contact him at \email{damien.pollet@inria.fr}, or visit \url{http://people.untyped.org/damien.pollet}.}
 
-\author[affiliation=scg, photo=manual/oscar, nowrap]
+\author[affiliation=scg, photo=oscar, nowrap]
     {Oscar Nierstrasz}
     {   is a professor of computer science at the Institute of Computer Science (\caps{IAM}) of the University of Bern, where he founded the Software Composition Group in 1994. 
 
         \url{http://scg.unibe.ch/staff/oscar}.}
 
-\author[affiliation=inria, photo=manual/stephane, nowrap]
+\author[affiliation=inria, photo=stephane, nowrap]
     {St\'ephane Ducasse}
     {   is a research director at Inria Lille, where he founded the RMoD group in 2007.
     
@@ -71,19 +61,14 @@
 
 \runningauthor{Damien Pollet et al.}
 \jotdetails{
-    % volume=0,
+    volume=0,
     % number=42,
-    year=2010,
+    articleno=1,
+    year=2011,
     % firstpage=51,
-    % doi=10.5381/42.101010,
-    % doisuffix=42.101010,
-    url={\githuburl}
+    url={http://github.com/cdlm/jot}
 }
 
-
-%%%
-%%%  Manuscript
-%%%
 \begin{document}
 
 \begin{abstract}
@@ -93,10 +78,9 @@
 
 
 
-
 \section{Installation and compatibility}
 
-The \jotcls project is hosted online at \url{\githuburl}. You can download stable versions from there, or directly clone the development sources from the version control repository.
+The \jotcls project is hosted online at \url{http://github.com/cdlm/jot/}. You can download stable versions from there, or directly clone the development sources from the version control repository.
 To install the package, simply copy the files somewhere where \TeX{} can find them.
 
 The class is developed and tested using the pdf\LaTeX{} toolchain, which is readily available in any modern \TeX{} distribution; the author uses \href{http://www.tug.org/texlive/}{\TeX{live}} on a Mac.
@@ -239,8 +223,6 @@ Keep the \parameter{description text} compact vertically, two or three lines at 
 \subsection{Publication information}
 
 The |\jotdetails| declaration defines publication and indexing information about the article, in |key=value| form (see \autoref{tab:jotdetails}).
-Usually, you will just specify the article-specific part of the \caps{DOI} identifier with |doisuffix|, since all \JOT articles will have a \caps{DOI} of the form \makeatletter\code{\jot@doijournalprefix/doisuffix}\makeatother.
-The |url| key only serves as a fallback in the page footers when no \caps{DOI} was specified.
 \begin{lstlisting}
     \jotdetails{_key-value info_}
 \end{lstlisting}
@@ -253,15 +235,14 @@ The |url| key only serves as a fallback in the page footers when no \caps{DOI} w
         \code{year} & number & Publication year, \\
         \code{volume} & number & \dots volume, \\
         \code{number} & number & \dots number of the issue. \\
-        \code{firstpage} & number & First page of this article, as placed in the full journal issue. \\
-        \\
-        \code{doisuffix} & string & Paper-specific part of the \caps{DOI} identifier. \\
-        \code{doi} & string & Full \caps{DOI} identifier (without resolver \caps{URL}). \\
-        \code{url} & \caps{URL} & Address of the paper in the \JOT web site. \\
         \\
         \code{received} & date & Dates of initial submission, \\
         \code{published} & date & \dots final publication, \\
         \code{revised} & date & \dots and latest revision of the paper. \\
+        \\
+        \code{firstpage} & number & First page of this article, as placed in the full journal issue. \\
+        \code{doi} & string & \caps{DOI} identifier for the paper, without the resolver prefix \caps{URL}. \\
+        \code{url} & \caps{URL} & Address of the paper in the \JOT web site. \\
         \bottomrule
     \end{tabularx}
     \caption{Option keys for \code{jotdetails}.}
@@ -272,7 +253,8 @@ The |url| key only serves as a fallback in the page footers when no \caps{DOI} w
 \subsection{Appendices and bibliography}
 
 Any appendices immediately follow the |\backmatter| declaration; you don't need to call |\appendix|.
-In the bibliography, use the |alpha| style for reference keys:
+
+Use the |alpha| style for reference keys:
 \begin{lstlisting}
     \bibliographystyle{alpha}
 \end{lstlisting}
@@ -328,7 +310,7 @@ Line numbers are pre-configured, and can be activated by adding |style=numbers| 
 
 Finally, this should be rarely needed in most articles, but if you need to display short code excerpts in the flow of paragraphs, like most examples in this document, you can just use the regular |lstlisting| environment without special options.
 
-For more info on supported languages or how to highlight parts of code, refer to the documentation of |listings|; please do not abuse of text styles though, most often the default font is really enough.\footnote{Highlighting is based on visual contrast and thus relies on scarcity to be effective.}
+You will probably need some additional configuration to indicate the language of your listings, and e.g. to highlight parts of code; please refer to the documentation of |listings| for more precisions, but keep the number of different text styles to a minimum.\footnote{Highlighting is based on visual contrast and thus relies on scarcity to be effective.}
 
 
 
@@ -357,12 +339,11 @@ It's best to keep the number of different text styles to a minimum: besides the 
 
 Tables or graphics with too many lines hamper legibility \cite{tufte,chicago}; to help minimize \emph{chartjunk} and maximize \emph{data ink}, \jotcls loads the |booktabs| package for you. To take advantage of it:
 \begin{itemize}
-    \item do not specify vertical rules in tables, and forget about |\hline|;
-    \item use |\toprule|, |\bottomrule|, and just a few |\middlerule| in between;
+    \item do not specify vertical rules in tables;
+    \item use |\toprule|, |\bottomrule|, and few |\middlerule| in between, instead of |\hline|;
     \item rely on spacing and column alignment to visually separate columns (use |@{\quad}| as a column separator).
 \end{itemize}
-
-The |microtype| package can help \LaTeX{} layout more compact paragraphs with fewer hyphenations.
+% microtype
 
 
 
@@ -371,7 +352,7 @@ The |microtype| package can help \LaTeX{} layout more compact paragraphs with fe
 
 \nocite{*}
 \bibliographystyle{alpha}
-\bibliography{manual/jot}
+\bibliography{jot-manual}
 
 % \newpage
 \abouttheauthors
