@@ -72,11 +72,9 @@
 \runningauthor{Damien Pollet et al.}
 \jotdetails{
     volume=0,
-    % number=42,
     articleno=0,
     year=2010,
-    % firstpage=51,
-    % doi=10.5381/jot.2011.10.1.a1,
+    doisuffix=jot.2011.10.1.a1,
     url={\githuburl}
 }
 
@@ -152,7 +150,7 @@ The \jotcls class builds on the standard \file{article.cls} from \LaTeX, so the 
         
         \backmatter
         _appendices\dots_
-        \bibliographystyle{alpha}
+        \bibliographystyle{alphaurl}
         \bibliography{_bib files_}
 
         \abouttheauthors
@@ -251,15 +249,16 @@ The |url| key only serves as a fallback in the page footers when no \caps{DOI} w
         \midrule
         \code{year} & number & Publication year, \\
         \code{volume} & number & \dots volume, \\
-        \code{number} & number & \dots number of the issue. \\
+        % \code{number} & number & \dots number of the issue. (not used after 2011) \\
+        \code{articleno} & number & \dots article number. (required starting 2011) \\
         \\
         \code{received} & date & Dates of initial submission, \\
         \code{published} & date & \dots final publication, \\
         \code{revised} & date & \dots and latest revision of the paper. \\
         \\
-        \code{firstpage} & number & First page of this article, as placed in the full journal issue. \\
-        \code{doi} & string & \caps{DOI} identifier for the paper, without the resolver prefix \caps{URL}. \\
-        \code{url} & \caps{URL} & Address of the paper in the \JOT web site. \\
+        % \code{firstpage} & number & First page of this article, as placed in the full journal issue. (After 2011, always 1, so not needed)\\
+        \code{doisuffix} & string & \caps{DOI} identifier for the paper, without the resolver prefix \caps{URL}. \\
+        % \code{url} & \caps{URL} & Address of the paper in the \JOT web site. \\
         \bottomrule
     \end{tabularx}
     \caption{Option keys for \code{jotdetails}.}
@@ -270,12 +269,28 @@ The |url| key only serves as a fallback in the page footers when no \caps{DOI} w
 \subsection{Appendices and bibliography}
 
 Any appendices immediately follow the |\backmatter| declaration; you don't need to call |\appendix|.
-In the bibliography, use the |alpha| style for reference keys:
+
+Be sure to include DOIs (Digital Object Identifiers) for all cited articles, where available.
+
 \begin{lstlisting}
-    \bibliographystyle{alpha}
+	@article{JOT:issue2010-09/editorial,
+	  author = {Oscar Nierstrasz},
+	  title = {Ten Things I Hate About Object-Oriented Programming},
+	  journal = {Journal of Object Technology},
+	  volume = {9},
+	  number = {5},
+	  issn = {1660-1769},
+	  year = {2010},
+	  month = sep,
+	  doi = {10.5381/jot.2010.9.5.e1}
+	}
+\end{lstlisting}
+
+In the bibliography, use the |alphaurl| style for reference keys, to ensure that DOIs and URLs will appear as links in the bibliography.
+\begin{lstlisting}
+    \bibliographystyle{alphaurl}
 \end{lstlisting}
 The bibliographic references follow the appendices; you can either adopt the Bib\TeX{} way as shown here, or use the |thebibliography| environment directly.
-
 
 \subsection{Author biographies and acknowledgments}
 
@@ -283,9 +298,6 @@ The |\abouttheauthors| declaration will typeset the authors' bibliographies from
 For the camera-ready version, think of adjusting the layout to the quantity of text for each author, by toggling the |nowrap| option in the |\author| declarations.
 
 Following this, you can use the |acknowledgments| environment to mention collaborations, grants, etc.
-
-
-
 
 \section{Floats and program code}
 
@@ -303,7 +315,7 @@ For tables, you can control the table width using the |tabularx| package.
 
 Exceptionally, if a figure or a table really needs to be wider than the text to be legible, you can wrap the graphics or tabular in a |fullwidth| environment, to temporarily reduce the margins. The effect of |fullwidth| is shown in \autoref{fig:fullwidth}.
 
-\begin{figure}[tb]
+\begin{figure}[h]
     \begin{fullwidth}
         \leftarrowfill\ |\linewidth| in the |fullwidth| environment \rightarrowfill
     \end{fullwidth}
@@ -367,7 +379,7 @@ The |microtype| package can help \LaTeX{} layout more compact paragraphs with fe
 \backmatter
 
 \nocite{*}
-\bibliographystyle{alpha}
+\bibliographystyle{alphaurl}
 \bibliography{jot-manual}
 
 % \newpage
