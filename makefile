@@ -17,6 +17,8 @@ clean:
 	cd jot \
 		&& latexmk -c \
 		&& rm -f jot-manual.bbl # latexmk fails to find it...
+	-rm -rf $T $T.zip
+	-rm -f jot/*.out jot/*.aux jot/*.out jot/*.log
 
 realclean: clean
 	rm -f jot/jot-manual.pdf

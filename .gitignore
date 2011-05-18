@@ -15,3 +15,4 @@ jot/jot-manual.bbl
 jot/jot-manual.blg
 templates
 makezip.command
+makeclean.command
