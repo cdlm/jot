@@ -44,7 +44,7 @@
 
 %%%% Publication information
 
-\newcommand\jot@doiderefaddress{http://dx.doi.org/}
+\newcommand\jot@doiderefaddress{https://doi.org/}
 \newcommand\jot@doijournalprefix{10.5381}
 \newcommand\jot@articledoiaddress{\jot@doiderefaddress\jot@doi}
 \newcommand\jot@journaldoiaddress{\jot@doiderefaddress\jot@journaldoi} % not used
