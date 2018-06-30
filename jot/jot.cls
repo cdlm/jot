@@ -1,8 +1,8 @@
 % $Id$
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{jot}[%
-    2010/05/01 0.1
-    (c) 2010 Damien Pollet, Inria / Univ. Lille 1, France
+    2018/06/30 0.2
+    (c) 2010-2018 Damien Pollet, Inria / Univ. Lille 1, France
 ]
 
 \ProcessOptions\relax
