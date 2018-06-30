@@ -1,3 +1,8 @@
-$pdf_mode = 1;
-# @default_files = ( 'paper' );
+# -*- mode: perl; -*-
+$pdf_mode = 4; # luaLaTeX
+$postscript_mode = $dvi_mode = 0;
+$lualatex = 'lualatex --synctex=8 --interaction nonstopmode --file-line-error --halt-on-error %O %S';
+
+push @generated_exts, 'synctex.gz';
+
 @default_files = ( 'jot-manual' );
